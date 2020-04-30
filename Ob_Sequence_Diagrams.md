@@ -21,6 +21,7 @@
 
 1. Lab Tech (one)
 2. Clock-In (one)
+3. TimeSlot
 
 ## Sequence Diagrams
 
@@ -44,13 +45,17 @@ acceptSwap() => approve:Admin
 ### Schedule (generateSchedule)
 
 1. user:User => generateSchedule(ID) => hanlder:ScheduleHandler => 
-request timeSlosts for ID => slot:TimeSlots
+request timeSlosts for ID => slots:TimeSlots
 
-2. slot:TimeSlots => timeslots => handler:ScheduleHandler => schedule 
+2. slots:TimeSlots => timeslots => handler:ScheduleHandler => schedule 
 => user:User
 
 ### Clock-in
 
-1. labTech:Lab Tech => ClockIn() => Clock-in => labTech:Lab Tech => 
-verifyUser
+1. user => Clock-in(ID,password) => :Clock-in => verifyUser(ID,password) => 
+:Lab Tech => verified => Clock-in => verifyClockIn(ID) => :TimeSlot =>
+verifiedClock-in
+
+2. TimeSlot => :Clock-in => user 
+
 

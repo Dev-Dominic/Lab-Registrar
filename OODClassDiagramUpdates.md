@@ -22,8 +22,10 @@ all the lab techs associated with each timeslot for this schedule.
 
 8. Admin feature: generatePassword(ID)
 
-9. retrieveTimeSlots()
-
 10. Create an association between LabTechs and TimeSlots
 
-11. 
+11. Addition of ID and password parameters to Clock-in
+
+12. verifyClockIn() => verifyClock(ID)
+
+
