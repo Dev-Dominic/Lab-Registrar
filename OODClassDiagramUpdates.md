@@ -18,4 +18,12 @@ all the lab techs associated with each timeslot for this schedule.
     - generateSchedule(ID)
     - generateMsSchedule() *Master Schedule*
 
+## During construction of Sequence diagram
 
+8. Admin feature: generatePassword(ID)
+
+9. retrieveTimeSlots()
+
+10. Create an association between LabTechs and TimeSlots
+
+11. 

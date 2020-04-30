@@ -26,5 +26,31 @@
 
 ### Request new password
 
+1. labTech:Lab Tech => requestNewPassword() => admin:Admin
 
+2. admin:Admin => generatePassword(ID) => admin:Admin
+
+3. admin:Admin => password => labtech:Lab Tech
+
+### Request temporary swap
+
+1. request:Lab Tech => requestSwap() => confirm:Lab Tech =>
+acceptSwap() => approve:Admin 
+
+2. approve:Admin => approveSwap(requestID, receiverID) => confirm:Lab Tech
+
+3. approve:Admin => approveSwap(requestID, receiverID) => request:Lab Tech
+
+### Schedule (generateSchedule)
+
+1. user:User => generateSchedule(ID) => hanlder:ScheduleHandler => 
+request timeSlosts for ID => slot:TimeSlots
+
+2. slot:TimeSlots => timeslots => handler:ScheduleHandler => schedule 
+=> user:User
+
+### Clock-in
+
+1. labTech:Lab Tech => ClockIn() => Clock-in => labTech:Lab Tech => 
+verifyUser
 
