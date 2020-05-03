@@ -1,10 +1,10 @@
 ## Presentation Three(3) Feedback
 
-### Feedack 
+### Feedack
 
 - First two forcing classes to works to be done by controllers
 
-- Controller for requesting password  
+- Controller for requesting password
 
 - Diagrams are accurate
 
@@ -15,12 +15,12 @@
 - Create different classes that controlles data between different objects in the
 system.
 
-- Take off burden off admin and lab tech classes 
+- Take off burden off admin and lab tech classes
 
-- Add more attributes to give more context as to how objects relate in the 
+- Add more attributes to give more context as to how objects relate in the
 Object Diagram at a given state.
 
-- Update names for Object Diagrams, something that reflects 
+- Update names for Object Diagrams, something that reflects
 
 - Break up request temporary swap, one for requesting a swap and one for
 confirming a swap.
@@ -30,6 +30,10 @@ confirming a swap.
 - Creation of Database Class
 
 - Creation hanlder class for changing of data between Admin and Lab Tech
+
+- Handler Classes:
+    - UserHanlder (Used to update user data) interacts with Database
+    - DatabaseHandler ()
 
 - Update names of Objects/Instances in Object and Sequence Diagram
 
@@ -42,4 +46,4 @@ context as to what is occuring in that even given instance.
 
 - Remove multiplicies from Object Diagram
 
-- Determine design pattern to use 
+- Determine design pattern to use
