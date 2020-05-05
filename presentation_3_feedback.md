@@ -31,9 +31,36 @@ confirming a swap.
 
 - Creation hanlder class for changing of data between Admin and Lab Tech
 
-- Handler Classes:
-    - UserHanlder (Used to update user data) interacts with Database
-    - DatabaseHandler ()
+- DatabaseController(Flask SQLAlchmey database class):
+ the purpose of this is to model how Flask and SQLAlchmey 
+ are used in typical flask projects that utilize a database
+
+- DatabaseController subclasses: 
+    1. User: Add field named isAdmin, remove User subclasses
+    2. TimeSlots
+    3. RequestController(Stores Lab Tech requests)
+
+- Class Handlers(Singletons): 
+    1. Login
+    2. Clock-in(Inherits Login for verfication functionality)
+    3. RequestHandler
+        - Password change requests
+        - Update user data requests
+        - Swap requests(request, confirm, approve)
+    4. ScheduleHandler(Used to generate Lab Tech Schedules and Master Schedules)
+
+- User Inteface Classes:
+    - LoginUI
+    - ClockInUI
+    - Registration(Requires real-time schedule to be generated)
+    - ViewMasterSchedule
+    - userSchedule(Lab Tech personalized schedule) 
+    - requestSwapUI (Global page that shows all requests)
+        - Limit confirm and request options to lab techs
+        - Only show approval option for admin accounts
+    - AdminUI
+        - Main: List of currently working lab tech
+        - View: Lab tech details(hours worked, etc) 
 
 - Update names of Objects/Instances in Object and Sequence Diagram
 
@@ -47,3 +74,16 @@ context as to what is occuring in that even given instance.
 - Remove multiplicies from Object Diagram
 
 - Determine design pattern to use
+
+### Notes
+
+##### Deciding Design pattern
+    1. Facade: Section of certain part of into a subsystem
+
+    2. Template: Used class extended to create Admin and Lab Tech classes
+
+    3. Adapter: Possible use in developing UserInteface
+
+    4. Singletons: Possible use for developing handler classes that possible may 
+        only need one instace
+#####
