@@ -33,21 +33,47 @@ confirming a swap.
 
 - DatabaseController(Flask SQLAlchmey database class):
  the purpose of this is to model how Flask and SQLAlchmey 
- are used in typical flask projects that utilize a database
+ are used in typical flask projects that utilize a database,
+ DatabaseController class only has one method called
+ query.
 
 - DatabaseController subclasses: 
-    1. User: Add field named isAdmin, remove User subclasses
+    1. User: 
+        - Add field named isAdmin 
+        - Add getHoursWorked method
+        - Remove Admin subclass
+        - LabTech subclass:
+            - hoursWorked
     2. TimeSlots
-    3. RequestController(Stores Lab Tech requests)
+    3. Events
+    4. RequestController(Stores Lab Tech requests)
+        - id
+        - userRequestID (user that makes the request)
+        - status
+        - Sub-classes: 
+            - SwapRequest 
+                - userConfirmID
+                - adminID
+                - userTimeSlotOne
+                - userTimeSlotTwo
+            - UserRequest
+                - infotype
+                - newInfo
+            - NewPasswordRequest
 
 - Class Handlers(Singletons): 
     1. Login
     2. Clock-in(Inherits Login for verfication functionality)
     3. RequestHandler
-        - Password change requests
-        - Update user data requests
-        - Swap requests(request, confirm, approve)
+        - 
+        - Sub-classes
+        - SwapRequestHandlder
+        - UserRequestHandlder
     4. ScheduleHandler(Used to generate Lab Tech Schedules and Master Schedules)
+        - Creates Schedule instance
+            - Stores specific lab tech schedule
+        - Makes use of TimeSlots DatabaseController
+        - staticmethod for creating MasterSchedule  
 
 - User Inteface Classes:
     - LoginUI
@@ -77,6 +103,12 @@ context as to what is occuring in that even given instance.
 
 ### Notes
 
+- Controllers should only be responsible for creating, deleting and updating
+data. 
+
+- Handlers deal with the logical aspects such as authentication and how things
+are done. 
+
 ##### Deciding Design pattern
     1. Facade: Section of certain part of into a subsystem
 
@@ -86,4 +118,8 @@ context as to what is occuring in that even given instance.
 
     4. Singletons: Possible use for developing handler classes that possible may 
         only need one instace
-#####
+
+#### Other updates
+
+
+
