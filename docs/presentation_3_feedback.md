@@ -37,6 +37,23 @@ confirming a swap.
  DatabaseController class only has one method called
  query.
 
+- Update names of Objects/Instances in Object and Sequence Diagram
+
+- Addition of attributes to Object in Object Diagrams to give
+context as to what is occuring in that even given instance.
+
+- Break Request temporary swap into two sequence diagrams:
+    1. Requesting Swap
+    2. Swap Confirmation
+
+- Remove multiplicies from Object Diagram
+
+- Determine design pattern to use
+
+### Updates
+
+#### Class Diagram
+
 - DatabaseController subclasses: 
     1. User: 
         - Add field named isAdmin 
@@ -76,11 +93,12 @@ confirming a swap.
         - staticmethod for creating MasterSchedule  
 
 - User Inteface Classes:
+    - UserInterface parent class? 
     - LoginUI
     - ClockInUI
-    - Registration(Requires real-time schedule to be generated)
-    - ViewMasterSchedule
-    - userSchedule(Lab Tech personalized schedule) 
+    - RegistrationUI(Requires real-time schedule to be generated)
+    - ViewMasterScheduleUI
+    - userScheduleUI(Lab Tech personalized schedule) 
     - requestSwapUI (Global page that shows all requests)
         - Limit confirm and request options to lab techs
         - Only show approval option for admin accounts
@@ -88,18 +106,10 @@ confirming a swap.
         - Main: List of currently working lab tech
         - View: Lab tech details(hours worked, etc) 
 
-- Update names of Objects/Instances in Object and Sequence Diagram
+#### Sequence Diagrams
 
-- Addition of attributes to Object in Object Diagrams to give
-context as to what is occuring in that even given instance.
-
-- Break Request temporary swap into two sequence diagrams:
-    1. Requesting Swap
-    2. Swap Confirmation
-
-- Remove multiplicies from Object Diagram
-
-- Determine design pattern to use
+- Request new password: 
+    -
 
 ### Notes
 
@@ -120,6 +130,3 @@ are done.
         only need one instace
 
 #### Other updates
-
-
-
