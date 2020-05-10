@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash
 NAME_LEN = 35
 PASSWORD_HASH_LEN = 256
 
-class UserMixin(object):
+class UserMixin(object): # TODO Make an abstract class
     """Mixin that models basic user for the system
 
     Attributes: 
@@ -26,6 +26,13 @@ class UserMixin(object):
     password = db.Column(db.String(PASSWORD_HASH_LEN), nullable=False)  
     isAdmin = db.Column(db.Boolean, nullable=False, default=False) 
 
+    def __init__(self, ID, firstname, lastname, password):
+        """ UserMixin Constructor """
+        self.uwiIssuedID = ID
+        self.firstname = firstname
+        self.lastname = lastname
+        self.password = generate_password_hash(password)
+        self.isAdmin = False
 
 class User(UserMixin, db.Model):
     """User model that represents a generic user in the lab system
@@ -38,10 +45,7 @@ class User(UserMixin, db.Model):
      
     def __init__(self, ID, firstname, lastname, password):
         """ User Constructor """
-        self.uwiIssuedID = ID
-        self.firstname = firstname
-        self.lastname = lastname
-        self.password = generate_password_hash(password)
+        UserMixin.__init__(self, ID, firstname, lastname, password)
 
     def __repr__(self):
         """ User Object string repersentation """
@@ -69,5 +73,5 @@ class LabTech(UserMixin, db.Model):
     hoursWorked = db.Column(db.Integer, nullable=False)
 
     def __init__(self, ID, firstname, lastname, password, hoursWorked):
-        super().__init__(ID, firstname, lastname, password)
+        UserMixin.__init__(self, ID, firstname, lastname, password)
         self.hoursWorked = hoursWorked
