@@ -1,11 +1,16 @@
+# Application Modules
+
 from app import db
+
+# Flask Modules
+
 from werkzeug.security import generate_password_hash
 
 NAME_LEN = 35
 PASSWORD_HASH_LEN = 256
 
-class User(db.Model):
-    """Models basic user for the system
+class UserMixin(object):
+    """Mixin that models basic user for the system
 
     Attributes: 
         uwiIssuedID
@@ -15,14 +20,22 @@ class User(db.Model):
         isAdmin
 
     """
-    __tablename__='users'
-    
-    uwiIssuedID = db.Column(db.Integer, primary_key=True)
+    uwiIssuedID = db.Column(db.Integer, primary_key=True, autoincrement=False)
     firstname = db.Column(db.String(NAME_LEN), nullable=False)
     lastname = db.Column(db.String(NAME_LEN), nullable=False)
     password = db.Column(db.String(PASSWORD_HASH_LEN), nullable=False)  
     isAdmin = db.Column(db.Boolean, nullable=False, default=False) 
 
+
+class User(UserMixin, db.Model):
+    """User model that represents a generic user in the lab system
+
+    Attributes:
+        inheritted from UserMixin
+
+    """
+    __tablename__='users'
+     
     def __init__(self, ID, firstname, lastname, password):
         """ User Constructor """
         self.uwiIssuedID = ID
@@ -42,7 +55,7 @@ class User(db.Model):
         """ Returns a user's initials """
         return f'{self.firstname[0]}{self.lastname[0]}'
 
-class LabTech(User):
+class LabTech(UserMixin, db.Model):
     """Models lab techs in the system
 
     Attributes:

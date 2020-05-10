@@ -23,6 +23,7 @@ from app.local import local
 from app.web import web
 
 app = Flask(__name__) 
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 # Blueprints registering
 
@@ -32,10 +33,13 @@ app.register_blueprint(web, url_prefix='/web')
 # Database configuration
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-migrate = Migrate(db)
+migrate = Migrate(app, db)
 
 # Login Manager
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+from app.classes.Controllers import user, timeslot 
