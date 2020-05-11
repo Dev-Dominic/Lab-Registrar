@@ -39,3 +39,13 @@ _ DB_USER: user password
 
 ```
 
+**Generate Database**
+*Ensure virtual environment is activated*
+```bash
+
+   (venv) $ python generate_testdb.py
+   (venv) $ flask db migrate 
+   (venv) $ flask db upgrade 
+
+```
+
