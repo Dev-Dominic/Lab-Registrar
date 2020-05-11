@@ -42,4 +42,4 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from app.classes.Controllers import user, timeslot 
+from app.classes.models import user, timeslot, request
