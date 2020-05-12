@@ -130,3 +130,9 @@ are done.
         only need one instace
 
 #### Other updates
+
+- Remove Date object association with TimeSlot in favor of day and time
+attriubtes.
+
+- RequestController should have an association with User and remove
+userRequestID as attribute.
