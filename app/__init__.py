@@ -1,5 +1,7 @@
 # Python Modules
 
+from app.web import web
+from app.local import local
 import sys
 import os
 
@@ -15,14 +17,12 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 load_dotenv()
 
-sys.path.append(os.getenv('BASEDIR')) # adding project app root
+sys.path.append(os.getenv('BASEDIR'))  # adding project app root
 
 # Blueprint Imports
 
-from app.local import local
-from app.web import web
 
-app = Flask(__name__) 
+app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 # Blueprints registering
@@ -42,4 +42,6 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from app.classes.models import user, timeslot, request
+# Views and models imports
+
+from app.classes.models import user, timeslot, request, clockin

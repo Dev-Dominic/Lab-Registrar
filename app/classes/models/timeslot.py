@@ -2,10 +2,12 @@
 
 from app import db
 from app.classes.models.user import LabTech
+from app.classes.models.clockin import ClockInEntry
 
 # Flask Modules
 
-NAME_LEN = 100 
+NAME_LEN = 100
+
 
 class Event(db.Model):
     """Stores various events that occur while the lab is open
@@ -13,7 +15,7 @@ class Event(db.Model):
     Attributes:
 
     """
-    __tablename__='events'
+    __tablename__ = 'events'
 
     id = db.Column(db.Integer, primary_key=True)
     event_name = db.Column(db.String(NAME_LEN))
@@ -29,13 +31,15 @@ class Event(db.Model):
 
 # Establishes many to many relationship between LabTech and  TimeSlot Object
 
+
 labtechs = db.Table(
     'labtech_timeslot',
     db.Column('timeslot_id', db.Integer, db.ForeignKey('timeslots.id'),
               primary_key=True),
-    db.Column('labtech_id', db.Integer, db.ForeignKey('labtechs.uwiIssuedID'),
+    db.Column('labtech_id', db.String(10), db.ForeignKey('labtechs.uwiIssuedID'),
               primary_key=True)
 )
+
 
 class TimeSlot(db.Model):
     """Stores all availabe timeslots for a given lab
@@ -47,15 +51,20 @@ class TimeSlot(db.Model):
         event: associated event 
 
     """
-    __tablename__='timeslots'
-    
+    __tablename__ = 'timeslots'
+
     id = db.Column(db.Integer, primary_key=True)
     day = db.Column(db.Integer, nullable=False)
-    time = db.Column(db.Integer, nullable=False) 
+    time = db.Column(db.Integer, nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), default=1,
                          nullable=False)
+
+    # Model Relationships
+
     labtechs = db.relationship('LabTech', secondary=labtechs, lazy='dynamic',
-                            backref=db.backref('timeslots', lazy='dynamic'))
+                               backref=db.backref('timeslots', lazy='dynamic'))
+    clock_in_entry = db.relationship('ClockInEntry', backref='timeslot',
+                                     lazy='select')
 
     def __init__(self, day, time, event_id):
         self.day = day
