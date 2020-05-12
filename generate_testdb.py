@@ -7,20 +7,20 @@ import os
 
 # Loading environment variables from .env file
 
-from dotenv import load_dotenv 
+from dotenv import load_dotenv
 load_dotenv()
 
-def setup(): 
-    """Setups project database 
+def setup():
+    """Setups project database
 
     Creates database and special user associated with database.
-    Make connnection to default postgres database to create 
+    Make connnection to default postgres database to create
     project database.
 
-    Args: 
+    Args:
         None
 
-    Returns: 
+    Returns:
         None
 
     """
@@ -33,16 +33,16 @@ def setup():
     conn = psycopg2.connect(
         user="postgres",
         password="password"
-    ) # Connecting to database  
+    ) # Connecting to database
 
-    with conn: 
+    with conn:
         autocommit = psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT
         conn.set_isolation_level(autocommit)
 
         cur = conn.cursor()
 
         try:
-            cur.execute(f'DROP DATABASE IF EXISTS "{db["DB_NAME"]}" ')  
+            cur.execute(f'DROP DATABASE IF EXISTS "{db["DB_NAME"]}" ')
             cur.execute(f'CREATE DATABASE "{db["DB_NAME"]}" ')
 
             cur.execute(f'DROP USER IF EXISTS "{db["DB_USER"]}" ')
@@ -50,7 +50,7 @@ def setup():
 
             cur.execute(f'GRANT ALL PRIVILEGES ON DATABASE "{db["DB_NAME"]}" to "{db["DB_USER"]}" ')
 
-            conn.commit()  
+            conn.commit()
         except Exception as e:
             print(f'An Error occured during setup: {e}')
 

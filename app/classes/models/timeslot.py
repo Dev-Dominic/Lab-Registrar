@@ -2,7 +2,7 @@
 
 from app import db
 from app.classes.models.user import LabTech
-from app.classes.models.clockin import ClockInEntry
+from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
 # Flask Modules
 
@@ -44,11 +44,11 @@ labtechs = db.Table(
 class TimeSlot(db.Model):
     """Stores all availabe timeslots for a given lab
 
-    Attributes: 
+    Attributes:
         id: unique identifier for timeslot
-        day: associated day of the week 
-        time: associated time of day for timeslot 
-        event: associated event 
+        day: associated day of the week
+        time: associated time of day for timeslot
+        event: associated event
 
     """
     __tablename__ = 'timeslots'
@@ -65,6 +65,8 @@ class TimeSlot(db.Model):
                                backref=db.backref('timeslots', lazy='dynamic'))
     clock_in_entry = db.relationship('ClockInEntry', backref='timeslot',
                                      lazy='select')
+    temp_swap = db.relationship('TemporarySwap', backref='timeslot',
+                                lazy='select')
 
     def __init__(self, day, time, event_id):
         self.day = day

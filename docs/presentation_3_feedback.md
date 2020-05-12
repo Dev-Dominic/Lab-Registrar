@@ -32,7 +32,7 @@ confirming a swap.
 - Creation hanlder class for changing of data between Admin and Lab Tech
 
 - DatabaseController(Flask SQLAlchmey database class):
- the purpose of this is to model how Flask and SQLAlchmey 
+ the purpose of this is to model how Flask and SQLAlchmey
  are used in typical flask projects that utilize a database,
  DatabaseController class only has one method called
  query.
@@ -54,21 +54,21 @@ context as to what is occuring in that even given instance.
 
 #### Class Diagram
 
-- DatabaseController subclasses: 
-    1. User: 
-        - Add field named isAdmin 
+- DatabaseController subclasses:
+    1. User:
+        - Add field named isAdmin
         - Add getHoursWorked method
         - Remove Admin subclass
         - LabTech subclass:
             - hoursWorked
     2. TimeSlots
     3. Events
-    4. RequestController(Stores Lab Tech requests)
+    4. Request(Stores Lab Tech requests)
         - id
         - userRequestID (user that makes the request)
         - status
-        - Sub-classes: 
-            - SwapRequest 
+        - Sub-classes:
+            - SwapRequest
                 - userConfirmID
                 - adminID
                 - userTimeSlotOne
@@ -77,12 +77,17 @@ context as to what is occuring in that even given instance.
                 - infotype
                 - newInfo
             - NewPasswordRequest
+    5. TemporarySwap(Stores temporary timeslot swaps between two labtechs)
+        - id
+        - labtechID
+        - timeslotID
 
-- Class Handlers(Singletons): 
+- Class Handlers(Singletons):
     1. Login
     2. Clock-in(Inherits Login for verfication functionality)
     3. RequestHandler
-        - 
+        - checkstate
+        - resolve
         - Sub-classes
         - SwapRequestHandlder
         - UserRequestHandlder
@@ -90,34 +95,34 @@ context as to what is occuring in that even given instance.
         - Creates Schedule instance
             - Stores specific lab tech schedule
         - Makes use of TimeSlots DatabaseController
-        - staticmethod for creating MasterSchedule  
+        - staticmethod for creating MasterSchedule
 
 - User Inteface Classes:
-    - UserInterface parent class? 
+    - UserInterface parent class?
     - LoginUI
     - ClockInUI
     - RegistrationUI(Requires real-time schedule to be generated)
     - ViewMasterScheduleUI
-    - userScheduleUI(Lab Tech personalized schedule) 
+    - userScheduleUI(Lab Tech personalized schedule)
     - requestSwapUI (Global page that shows all requests)
         - Limit confirm and request options to lab techs
         - Only show approval option for admin accounts
     - AdminUI
         - Main: List of currently working lab tech
-        - View: Lab tech details(hours worked, etc) 
+        - View: Lab tech details(hours worked, etc)
 
 #### Sequence Diagrams
 
-- Request new password: 
+- Request new password:
     -
 
 ### Notes
 
 - Controllers should only be responsible for creating, deleting and updating
-data. 
+data.
 
 - Handlers deal with the logical aspects such as authentication and how things
-are done. 
+are done.
 
 ##### Deciding Design pattern
     1. Facade: Section of certain part of into a subsystem
@@ -126,7 +131,7 @@ are done.
 
     3. Adapter: Possible use in developing UserInteface
 
-    4. Singletons: Possible use for developing handler classes that possible may 
+    4. Singletons: Possible use for developing handler classes that possible may
         only need one instace
 
 #### Other updates
