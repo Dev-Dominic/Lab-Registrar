@@ -2,7 +2,7 @@
 
 from app import db
 from app.classes.models.request import SwapRequest, UserRequest
-from app.classes.models.clockin import ClockInEntry
+from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
 # Flask Modules
 
@@ -15,7 +15,7 @@ PASSWORD_HASH_LEN = 256
 class UserMixin(object):  # TODO Make an abstract class
     """Mixin that models basic user for the system
 
-    Attributes: 
+    Attributes:
         uwiIssuedID
         firstname
         lastname
@@ -84,7 +84,10 @@ class LabTech(UserMixin, db.Model):
     # Model Relationships
     user_request = db.relationship(
         'UserRequest', backref='labtech', lazy='select')
-    clock_in_entry = db.relationship('ClockInEntry', backref='labtech', lazy='select')
+    clock_in_entry = db.relationship(
+        'ClockInEntry', backref='labtech', lazy='select')
+    temp_swap = db.relationship('TemporarySwap', backref='labtech',
+                                lazy='select')
 
     def __init__(self, ID, firstname, lastname, password, hoursWorked):
         UserMixin.__init__(self, ID, firstname, lastname, password)

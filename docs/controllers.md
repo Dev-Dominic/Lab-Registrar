@@ -1,4 +1,4 @@
-# Controllers 
+# Controllers
 
 Controller classes should have checks that ensure that data is consistent
 throughout what the models store.
@@ -12,7 +12,7 @@ throughout what the models store.
 Ensures that a given labtech matches a given timeslot.
 
 1. Accepts both labtech and timeslot identifiers.
-2. Makes query to timeslot database controller 
+2. Makes query to timeslot database controller
 3. Determines whether the labtech's identifier is associated with the timeslot
 
 ## Request Controllers
@@ -21,9 +21,9 @@ Ensures that a given labtech matches a given timeslot.
    tables.
 
 2. Once each request has reached a resolved state the controller should make
-   updates to the various models database. 
+   updates to the various models database.
 
-#### RequestControllerAbstract 
+#### RequestControllerAbstract
 
 **CheckState**
 
@@ -45,22 +45,30 @@ Makes updates to the database through the application models.
    consistency in the database models/tables.
 3. Changes are reflected in database models/tables
 4. Return true if resolve was successfully and false otherwise
- 
+
 #### SwapRequestController
 
- **Dependencies**
+**Dependencies**
 
- 1. Application SQLAlchemy database instance
- 2. Application SwapRequest model
- 3. TimeSlotMatch from Utils module
+1. Application SQLAlchemy database instance
+2. Application SwapRequest model
+3. TimeSlotMatch from Utils module
 
- **Resolve**
+**Resolve**
 
+1. Call parent class *Resolve* definition
+2. Create new TemporarySwap instance, passing:
+    * labtechID
+    * counterTimeSlotID
+3. Create new TemporarySwap instance, passing:
+    * counterlabtechID
+    * requestTimeSlotID
+4. Add both TemporarySwap instances to database and commit changes
 
 **Request Swap**
 
 1. Use *TimeSlotMatch* to determine whether labtech corresponds with a given
-   timeslot. 
+   timeslot(requestTimeSlotID).
 2. Create a new SwapRequest instance filling in the necessary details.
     - labtechID
     - request status
