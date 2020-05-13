@@ -44,4 +44,7 @@ login_manager.init_app(app)
 
 # Views and models imports
 
-from app.classes.models import user, timeslot, request, clockin
+from app.classes.models.user import User, LabTech
+from app.classes.models.timeslot import Event, TimeSlot 
+from app.classes.models.request import SwapRequest, UserRequest
+from app.classes.models.clockin import ClockInEntry, TemporarySwap
