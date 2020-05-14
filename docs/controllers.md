@@ -3,11 +3,11 @@
 Controller classes should have checks that ensure that data is consistent
 throughout what the models store.
 
-### Utilities 
+### Utilities
 
 **isAdmin**
 
-1. Query for ID using User and Labtech models    
+1. Query for ID using User and Labtech models
 2. Return whether the given instance/model is an admin or not
 
 **TimeSlotMatch**
@@ -23,7 +23,7 @@ Ensures that a given labtech matches a given timeslot.
 1. Generate pseudo-random password (using initials and random number between 100
    and 999)
 2. Generate new password hash
-3. Return password hash 
+3. Return password hash
 
 **Verify User**
 
@@ -43,6 +43,10 @@ Ensures that a given labtech matches a given timeslot.
    updates to the various models database.
 
 #### RequestControllerAbstract
+
+**Get Request**
+
+Retrieves an instance of the model/table
 
 **CheckState**
 
@@ -75,14 +79,15 @@ Makes updates to the database through the application models.
 
 **Resolve**
 
-1. Call parent class *Resolve* definition (Passing requestID)
-2. Create new TemporarySwap instance, passing:
+1. Use *Check State* to determine if request is in a resolvable state
+2. Query for SwapRequest using requestID
+3. Create new TemporarySwap instance, passing:
     * labtechID
     * counterTimeSlotID
-3. Create new TemporarySwap instance, passing:
+4. Create new TemporarySwap instance, passing:
     * counterlabtechID
     * requestTimeSlotID
-4. Add both TemporarySwap instances to database and commit changes
+5. Add both TemporarySwap instances to database and commit changes
 
 **Request Swap**
 
@@ -92,6 +97,7 @@ Makes updates to the database through the application models.
     - labtechID
     - request status
 3. Add and commit these SwapRequest to database.
+4. Boolean if swap request successfully made
 
 **Accept Swap**
 
@@ -102,14 +108,16 @@ Makes updates to the database through the application models.
     * Update Status to confirm to indicate that labtech has affirmed to wanting
     a possible switch
 3. Commit changes to SwapRequest model/database
+4. Boolean if swap confirmation request successfully made
 
 **Approve Swap**
 
 1. Check that adminID is a valid admin
-2. Update SwapRequest instance with swapID
+2. Update SwapRequest instance, querying with swapID
     * Update adminID field
     * Update status field with either **DENIED** or **APPROVED**
 3. Run *Resolve*
+4. Return boolean value of resolve to indicate swap approval was successful
 
 #### UserRequestController
 
@@ -120,13 +128,13 @@ Makes updates to the database through the application models.
 
 **Resolve**
 
-1. Call parent class *Resolve* definition (Passing requestID)
+1. Use *Check State* to determine if request is in a resolvable state
 2. Check whether infoType is a password:
-    * False: 
+    * False:
         1. Query for LabTech
-    * True: 
-        1. Call Utils *GeneratePassword* method 
-        2. Query for LabTech instance 
+    * True:
+        1. Call Utils *GeneratePassword* method
+        2. Query for LabTech instance
 3. Update labtech instance and commit changes
 
 **Update User Data**
@@ -142,7 +150,7 @@ Makes updates to the database through the application models.
 **Approve Request**
 
 1. Check that ID passed is a valid adminID
-2. Retrieve UserRequest instance using userRequestID 
+2. Retrieve UserRequest instance using userRequestID
 3. Update status field with either **DENIED** or **APPROVED**
 4. Run *Resolve*
 
@@ -158,16 +166,24 @@ Makes updates to the database through the application models.
 **User Login**
 
 1. Verify User using utils module
-2. Use login manager to login user 
-3.  
-
-**Configure Session**
+2. Use login manager to login user
+3. Return boolean indicate success of operation
 
 #### Clock-in
 
 **Verify ClockIn**
 
+1. Verify user using utils module
+2. Verify that the current time matches with a given users timeslots by probing
+   the timeslot table and the temporary swap table
+3. Return boolean indicating verification success
+
 **ClockIn**
+
+1. Verify user clock using *Verify ClockIn*
+2. Update a given users hoursworked to reflect successful clock-in based on
+   verificiation
+2. Return status message and code to indicate success of clock-in
 
 ## Other
 
@@ -182,15 +198,15 @@ Each method describe returns a json object with all the associated timeslots.
 
 **Generate Schedule**
 
-1. LabtechID validation 
+1. LabtechID validation
 2. Query TimeSlot model for all timeslots that are associated with LabTechID
 3. Format list of TimeSlots into a json object
-    
+
 ```json
 
 {
     timeslot.id: {
-        day  
+        day
         time
         event_name
     }
@@ -211,7 +227,7 @@ Each method describe returns a json object with all the associated timeslots.
         day
         time
         event_name
-        labtechs: ['DH', 'DC', 'TT', 'SJ', 'BT', 'JS'] 
+        labtechs: ['DH', 'DC', 'TT', 'SJ', 'BT', 'JS']
     }
 }
 
