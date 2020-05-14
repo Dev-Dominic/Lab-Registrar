@@ -29,7 +29,7 @@ class ClockInEntry(db.Model):
         self.timeslot_id = timeslot_id
         self.date_time = datetime.now()
 
-
+# TODO implement expiration for a temporary swap
 class TemporarySwap(db.Model):
     """Stores data used to determine whether a user is eligible to clock-in at a
     given time
