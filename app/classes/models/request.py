@@ -81,9 +81,9 @@ class SwapRequest(RequestMixin, db.Model):
     confirm_labtech_timeslot = db.relationship('TimeSlot',
                                                foreign_keys=confirm_labtech_timeslot_id)
 
-    def __init__(self, status, labtech_request_id, request_labtech_timeslot_id):
+    def __init__(self,labtech_request_id, request_labtech_timeslot_id):
         """ SwapRequest Constructor """
-        RequestMixin.__init__(self, status)
+        RequestMixin.__init__(self, Status.OPEN)
         self.labtech_request_id = labtech_request_id
         self.request_labtech_timeslot_id = request_labtech_timeslot_id
 
