@@ -52,7 +52,7 @@ def setup():
 
             conn.commit()
         except Exception as e:
-            print(f'An Error occured during setup: {e}')
+            print(f'An Error occurred during setup: {e}')
 
 if __name__ == "__main__":
     setup()

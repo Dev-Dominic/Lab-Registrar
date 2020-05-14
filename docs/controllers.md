@@ -3,9 +3,12 @@
 Controller classes should have checks that ensure that data is consistent
 throughout what the models store.
 
-## Util methods
+### Utilities 
 
 **isAdmin**
+
+1. Query for ID using User and Labtech models    
+2. Return whether the given instance/model is an admin or not
 
 **TimeSlotMatch**
 
@@ -14,6 +17,22 @@ Ensures that a given labtech matches a given timeslot.
 1. Accepts both labtech and timeslot identifiers.
 2. Makes query to timeslot database controller
 3. Determines whether the labtech's identifier is associated with the timeslot
+
+**Generate Password**
+
+1. Generate pseudo-random password (using initials and random number between 100
+   and 999)
+2. Generate new password hash
+3. Return password hash 
+
+**Verify User**
+
+1. Query for user in both the User and LabTech tables
+    * Not Found: return false
+2. Validate that the password that was passed with the password hash present in
+   the table
+    * Not Valid: return false
+3. Once the password validation is successful return true
 
 ## Request Controllers
 
@@ -56,7 +75,7 @@ Makes updates to the database through the application models.
 
 **Resolve**
 
-1. Call parent class *Resolve* definition
+1. Call parent class *Resolve* definition (Passing requestID)
 2. Create new TemporarySwap instance, passing:
     * labtechID
     * counterTimeSlotID
@@ -94,13 +113,106 @@ Makes updates to the database through the application models.
 
 #### UserRequestController
 
+**Dependencies**
+
+1. Application SQLAlchemy database instance
+2. GeneratePassword from Utils module
+
+**Resolve**
+
+1. Call parent class *Resolve* definition (Passing requestID)
+2. Check whether infoType is a password:
+    * False: 
+        1. Query for LabTech
+    * True: 
+        1. Call Utils *GeneratePassword* method 
+        2. Query for LabTech instance 
+3. Update labtech instance and commit changes
+
+**Update User Data**
+
+1. Check that the user/labtech identifier is valid
+2. Create new UserRequest instance
+    * labtechID
+    * status to OPEN
+    * infoType
+    * newInfo
+3. Add and commit new UserRequest to database
+
+**Approve Request**
+
+1. Check that ID passed is a valid adminID
+2. Retrieve UserRequest instance using userRequestID 
+3. Update status field with either **DENIED** or **APPROVED**
+4. Run *Resolve*
+
 ## Access Controllers
+
+**Dependencies**
+
+1. Application SQLAlchemy database instance
+2. Verify User from Utils module
 
 #### Login
 
+**User Login**
+
+1. Verify User using utils module
+2. Use login manager to login user 
+3.  
+
+**Configure Session**
+
 #### Clock-in
+
+**Verify ClockIn**
+
+**ClockIn**
 
 ## Other
 
 #### ScheduleController
 
+**Dependencies**
+
+1. Application SQLAlchemy database instance
+2. Application TimeSlot, Event, LabTech model
+
+Each method describe returns a json object with all the associated timeslots.
+
+**Generate Schedule**
+
+1. LabtechID validation 
+2. Query TimeSlot model for all timeslots that are associated with LabTechID
+3. Format list of TimeSlots into a json object
+    
+```json
+
+{
+    timeslot.id: {
+        day  
+        time
+        event_name
+    }
+}
+
+```
+
+**Generate Master Schedule**
+
+1. Query TimeSlot model for all Timeslots
+2. Create a json object with timeslot information, as well as, one key : value
+   pair that has a list of associated labtechs by Initials.
+
+```json
+
+{
+    timeslot.id: {
+        day
+        time
+        event_name
+        labtechs: ['DH', 'DC', 'TT', 'SJ', 'BT', 'JS'] 
+    }
+}
+
+```
