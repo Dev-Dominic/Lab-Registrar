@@ -146,6 +146,7 @@ Makes updates to the database through the application models.
     * infoType
     * newInfo
 3. Add and commit new UserRequest to database
+4. Return true or false to determine success of operation
 
 **Approve Request**
 
@@ -153,6 +154,7 @@ Makes updates to the database through the application models.
 2. Retrieve UserRequest instance using userRequestID
 3. Update status field with either **DENIED** or **APPROVED**
 4. Run *Resolve*
+5. Return true or false to determine success of operation
 
 ## Access Controllers
 
@@ -182,7 +184,7 @@ Makes updates to the database through the application models.
 
 1. Verify user clock using *Verify ClockIn*
 2. Update a given users hoursworked to reflect successful clock-in based on
-   verificiation
+   verification
 2. Return status message and code to indicate success of clock-in
 
 ## Other
@@ -198,9 +200,8 @@ Each method describe returns a json object with all the associated timeslots.
 
 **Generate Schedule**
 
-1. LabtechID validation
-2. Query TimeSlot model for all timeslots that are associated with LabTechID
-3. Format list of TimeSlots into a json object
+1. Query TimeSlot model for all timeslots that are associated with LabTechID
+2. Format list of TimeSlots into a json object
 
 ```json
 

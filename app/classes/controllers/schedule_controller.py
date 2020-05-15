@@ -54,7 +54,7 @@ class ScheduleController:
         Args: None
 
         Return:
-            result: dictionary containg all timeslots stored
+            result: dictionary containing all timeslots stored
 
             {
                 timeslot.id: {
@@ -72,7 +72,7 @@ class ScheduleController:
             timeslot.id : {
                 'day' : timeslot.day,
                 'time' : timeslot.time,
-                'event' : timeslot.event.event_name
+                'event' : timeslot.event.event_name,
                 'labtechs' : [labtech.user_initials() for labtech in
                               timeslots.labtechs.all() ]
             }

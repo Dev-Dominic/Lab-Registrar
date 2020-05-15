@@ -76,8 +76,7 @@ class SwapRequestController(RequestControllerAbstract):
 
     @staticmethod
     def check_state(swapID):
-        """Checks whether a request is in a reo
-        request
+        """Checks whether a request is in a resolved state request
 
         Args:
             swapID: associated request identifier
@@ -201,3 +200,68 @@ class SwapRequestController(RequestControllerAbstract):
 
         success = SwapRequestController.resolve(swapID)
         return success
+
+def UserRequestController(RequestControllerAbstract):
+    """Controls the various stages within a user request
+
+    There are three stages:
+        1. A user requests update to information
+        2. Request approval by admin
+        3. Resolved method is then called to make the necessary system
+
+    """
+    @staticmethod
+    def get_request(userRequestID):
+        """Queries SwapRequest instance associated with swapID
+
+        Args:
+            userRequestID: associated UserRequest identifier
+
+        Return:
+            user_request: UserRequest instance
+
+        """
+        swap_request = UserRequest.query.filter_by(id=userRequestID).first()
+        return swap_request
+
+    @staticmethod
+    def check_state(userRequestID):
+        """Checks whether a request is in a resolved request
+
+        Args:
+            swapID: associated request identifier
+
+        Return:
+            is_resolvable: boolean indicating whether operation was successful
+
+        """
+        is_resolvable = UserRequestController.get_request(userRequestID).status == Status.APPROVED
+        return is_resolvable
+
+    @staticmethod
+    def resolve(userRequestID):
+        """Makes changes to stored data reflecting the changes required by a
+        request
+
+        Args:
+            requestID: associated request identifier
+
+        """
+        pass
+
+    @staticmethod
+    def update(labtechID):
+        """Creates a new user/labtech request to update specific info
+
+        Args:
+            labtechID: labtech identifier
+
+        Return:
+            success: boolean indicating operation success
+
+        """
+        succces = False
+
+    @staticmethod
+    def approve(adminID):
+        pass
