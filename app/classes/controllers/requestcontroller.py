@@ -60,7 +60,8 @@ class SwapRequestController(RequestControllerAbstract):
 
     """
 
-    def SwapRequestController.get_request(swapID):
+    @staticmethod
+    def get_request(swapID):
         """Queries SwapRequest instance associated with swapID
 
         Args:
@@ -73,6 +74,7 @@ class SwapRequestController(RequestControllerAbstract):
         swap_request = SwapRequest.query.filter_by(id=swapID).first()
         return swap_request
 
+    @staticmethod
     def check_state(swapID):
         """Checks whether a request is in a reo
         request
@@ -87,6 +89,7 @@ class SwapRequestController(RequestControllerAbstract):
         is_resolvable = SwapRequestController.get_request(swapID).status == Status.APPROVED
         return is_resolvable
 
+    @staticmethod
     def resolve(swapID):
         """Makes changes to stored data reflecting the changes required by a
         request
@@ -99,7 +102,7 @@ class SwapRequestController(RequestControllerAbstract):
 
         """
         resolved = False
-        if check_state(swapID):
+        if SwapRequestController.check_state(swapID):
             return resolved
 
         request = SwapRequestController.get_request(swapID)
@@ -118,6 +121,7 @@ class SwapRequestController(RequestControllerAbstract):
         resolved = True
         return resolved
 
+    @staticmethod
     def request_swap(labtechID, timeslotID):
         """Creates SwapRequest indicating a labtech wants a temporary swap of
         timeslots.
@@ -143,6 +147,7 @@ class SwapRequestController(RequestControllerAbstract):
         success = True
         return success
 
+    @staticmethod
     def accept_swap(counterLabtechID, counterTimeslotID, swapID):
         """Adding counterLabTech offer to a given swap request
 
@@ -170,6 +175,7 @@ class SwapRequestController(RequestControllerAbstract):
         return success
 
 
+    @staticmethod
     def approve_swap(adminID, status, swapID):
         """Admin approval or denial of a swap request
 

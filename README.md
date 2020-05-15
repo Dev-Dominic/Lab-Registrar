@@ -2,13 +2,13 @@
 
 ## Setup
 
-### Environment Variables 
+### Environment Variables
 
 **Note:** These should be set in .env file, these are **not optional**
 
 - BASEDIR: Absolute Path to Lab-Registrar project folder
 - DEBUG: sets flask debug mode
-- SECRET_KEY: randomly generated secret key 
+- SECRET_KEY: randomly generated secret key
 - DB_NAME: name of postgresql test database
 - DB_USER: name of user that has access to test database
 _ DB_USER: user password
@@ -33,9 +33,9 @@ _ DB_USER: user password
 <br>
 *Ensure virtual environment is activated*
 ```bash
-    
+
     (venv) $ pip install -r requirements.txt
-    (venv) $ flask run 
+    (venv) $ flask run
 
 ```
 
@@ -44,8 +44,17 @@ _ DB_USER: user password
 ```bash
 
    (venv) $ python generate_testdb.py
-   (venv) $ flask db migrate 
-   (venv) $ flask db upgrade 
+   (venv) $ flask db migrate
+   (venv) $ flask db upgrade
 
 ```
 
+### Project Structure
+
+**Models**
+
+**Controllers**
+
+**API**
+
+**Views**
