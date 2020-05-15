@@ -1,7 +1,7 @@
 # Python Modules
 
-from app.web import web
-from app.local import local
+from app.api.web import web
+from app.api.local import local
 import sys
 import os
 

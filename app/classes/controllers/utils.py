@@ -93,3 +93,29 @@ def verify_user(ID, password):
 
     verified = check_password_hash(query_user.password, password)
     return verified
+
+def verify_user_id(ID):
+    """Verification of user using id and password
+
+    Args:
+        ID: user/labtech identifier
+        password
+
+    Return:
+        verified: boolean indicating whether verification was successful
+
+    """
+    verified = False
+
+    # Retrieving user data by checking both the User and LabTech models/tables.
+
+    query_user = User.query.filter_by(uwiIssuedID=ID).first()
+    if not query_user:
+        query_user = LabTech.query.filter_by(uwiIssuedID=ID).first()
+        if not query_user:
+            verified = False
+            return verified
+
+    verified = check_password_hash(query_user.password, password)
+    return verified
+
