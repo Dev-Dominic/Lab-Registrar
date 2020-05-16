@@ -116,21 +116,7 @@ def get_user(ID, request_list):
     Return:
         user_data: filtered user object, that is stored in a dictionary
 
-        {
-            key : 'value',
-            'firstname' : 'Bruce',
-            'initials' : 'BH'
-        }
-
     """
-    user_data = {}
-    response = find_user(ID)
-
-    # Filtering of query response using request_list
-    # Object dict donder method used to dynamically access
-    # class attributes
-
-    if reponse:
-        for filter_el in request_list:
-            user_data[filter_el] = response.__dict__(filter_el)
+    user_data = find_user(ID).filter_user(request_list)
     return user_data
+

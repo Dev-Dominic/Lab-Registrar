@@ -189,27 +189,18 @@ Makes updates to the database through the application models.
 
 #### Login
 
-**User Login**
-
 1. Verify User using utils module
 2. Use login manager to login user
 3. Return boolean indicate success of operation
 
 #### Clock-in
 
-**Verify ClockIn**
-
 1. Verify user using utils module
 2. Verify that the current time matches with a given users timeslots by probing
    the timeslot table and the temporary swap table
-3. Return boolean indicating verification success
-
-**ClockIn**
-
-1. Verify user clock using *Verify ClockIn*
-2. Update a given users hoursworked to reflect successful clock-in based on
+3. Update a given users hoursworked to reflect successful clock-in based on
    verification
-2. Return status message and code to indicate success of clock-in
+4. Return status message and code to indicate success of clock-in
 
 ## Other
 

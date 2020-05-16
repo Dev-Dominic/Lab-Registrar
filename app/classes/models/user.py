@@ -40,16 +40,55 @@ class UserMixin(object):  # TODO Make an abstract class
         self.isAdmin = isAdmin
 
     def __repr__(self):
-        """ User Object string repersentation """
-        return f'<User: {self.fullname()}>'
+        """ User Object string representation """
+        return f'<User: {self.fullname}>'
 
+    @property
     def fullname(self):
         """ Returns a user's fullname """
         return f'{self.firstname} {self.lastname}'
 
+    @property
     def user_initials(self):
         """ Returns a user's initials """
         return f'{self.firstname[0]}{self.lastname[0]}'
+
+    def filter_user(self, filter_list):
+        """Returns filtered dictionary of user attributes
+
+        Args:
+            self: instance object
+            filter_list: list of attributes required
+
+        Return:
+            user_data: user filtered dictionary 
+
+            {
+                key : 'value',
+                'firstname' : 'Bruce',
+                'initials' : 'BH'
+            }
+
+        """
+        # Filtering of query response using filter_list
+        # Checks that attr is in the object's attribute/method dictionary  
+        # vars method used to dynamically access class attributes
+
+        user_data = {}
+        for attr in filter_list:
+            if attr in self.__dict__:
+                user_data[attr] = vars(self)[attr]
+
+            # Checks for user_initials and fullname properties because they
+            # do not appear in the dictionary generated from vars
+
+            if attr == 'user_initials':
+                user_data[attr] = self.user_initials
+
+            if attr == 'fullname':
+                user_data[attr] = self.fullname 
+
+        return user_data
 
 
 class User(UserMixin, db.Model):

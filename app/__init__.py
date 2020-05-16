@@ -17,7 +17,7 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 load_dotenv()
 
-sys.path.append(os.getenv('BASEDIR'))  # adding project app root
+sys.path.append(os.getenv('APP'))  # adding project app root
 
 # Blueprint Imports
 

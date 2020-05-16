@@ -7,12 +7,11 @@ from abc import ABC, abstractmethod
 from app import db
 from app.classes.models.request import Status, InfoType, SwapRequest, UserRequest
 from app.classes.models.clockin import TemporarySwap
-from app.classes.controllers.utils import timeslot_match, is_admin, find_user,
-generate_password
+from app.classes.controllers.utils import timeslot_match, is_admin, find_user, generate_password
 
 # Flask Modules
 
-class RequestControllerAbstract(ABC):
+class RequestController(ABC):
     """Contains common methods that all requestcontrollers should contain
 
     """
@@ -48,7 +47,7 @@ class RequestControllerAbstract(ABC):
 # Making query to SwapRequest twice
 # Need for exception handling in each method
 
-class SwapRequestController(RequestControllerAbstract):
+class SwapRequestController(RequestController):
     """Controls the various stages within a timeslot swap request
 
     There are four stages:
@@ -86,7 +85,8 @@ class SwapRequestController(RequestControllerAbstract):
             is_resolvable: boolean indicating whether operation was successful
 
         """
-        is_resolvable = SwapRequestController.get_request(swapID).status == Status.APPROVED
+        status = SwapRequestController.get_request(swapID).status
+        is_resolvable = status == Status.CONFIRM
         return is_resolvable
 
     @staticmethod
@@ -102,10 +102,15 @@ class SwapRequestController(RequestControllerAbstract):
 
         """
         resolved = False
-        if SwapRequestController.check_state(swapID):
+        if not SwapRequestController.check_state(swapID):
             return resolved
 
         request = SwapRequestController.get_request(swapID)
+
+        # Checks whether request was resolved already
+
+        if request.status in [Status.DENIED, Status.APPROVED]:
+            return resolved
 
         # Adding two entries into TemporarySwap reflecting swap of timeslots
 
@@ -165,11 +170,12 @@ class SwapRequestController(RequestControllerAbstract):
         # Retrieving SwapRequest and updating request
         swap_request = SwapRequestController.get_request(swapID)
 
-        swap_request.labtech_confirm_id = counterLabtechID
-        swap_request.confirm_labtech_timeslot_id = counterTimeslotID
-        swap_request.status = Status.CONFIRM
+        if not swap_request.status in [Status.DENIED, Status.APPROVED]:
+            swap_request.labtech_confirm_id = counterLabtechID
+            swap_request.confirm_labtech_timeslot_id = counterTimeslotID
+            swap_request.status = Status.CONFIRM
 
-        db.commit.session()
+            db.session.commit()
 
         success = True
         return success
@@ -196,13 +202,17 @@ class SwapRequestController(RequestControllerAbstract):
 
         # Updates to swap request instance
 
-        swap_request.admin_approve_id = adminID
-        swap_request.status = status
+        if not swap_request.status in [Status.DENIED, Status.APPROVED]:
+            swap_request.admin_approve_id = adminID
+            success = SwapRequestController.resolve(swapID)
 
-        success = SwapRequestController.resolve(swapID)
+            if success:
+                swap_request.status = status
+                db.session.commit()
+
         return success
 
-class UserRequestController(RequestControllerAbstract):
+class UserRequestController(RequestController):
     """Controls the various stages within a user request
 
     There are three stages:
@@ -236,7 +246,8 @@ class UserRequestController(RequestControllerAbstract):
             is_resolvable: boolean indicating whether operation was successful
 
         """
-        is_resolvable = UserRequestController.get_request(userRequestID).status == Status.APPROVED
+        status = UserRequestController.get_request(userRequestID).status
+        is_resolvable =  status == Status.OPEN
         return is_resolvable
 
     @staticmethod
@@ -254,15 +265,21 @@ class UserRequestController(RequestControllerAbstract):
         resolved = False
         if UserRequestController.check_state(userRequestID):
             user_request = UserRequestController.get_request(userRequestID)
+
+            # Checks whether a given request has already been resolved
+            if user_request.status in [Status.DENIED, Status.APPROVED]:
+                return False
+
             labtech = find_user(user_request.labtech_id)
 
             if user_request.infoType == InfoType.PASSWORD:
                 labtech.password = generate_password(labtech.user_initials())
             else:
-                # dict donder method to dynamically change instance attributes
+                # Using vars to get a dictionary of attributes
+                # this allows for dynamically change instance attributes
 
                 infoType = user_request.infoType.lower()
-                labtech.__dir__(infoType) = user_request.newInfo
+                vars(labtech)[infoType] = user_request.newInfo
 
             db.session.commit() # update labtech instance in database
             resolved = True

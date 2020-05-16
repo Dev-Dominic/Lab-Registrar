@@ -1,6 +1,15 @@
 # Python Modules
 
 from random import randint
+import sys
+import os
+
+# PyPi modules
+
+from dotenv import load_dotenv
+load_dotenv()
+
+sys.path.append(os.getenv('BASEDIR'))  # adding project app root
 
 # Application Modules
 
