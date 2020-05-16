@@ -25,6 +25,12 @@ Ensures that a given labtech matches a given timeslot.
 2. Generate new password hash
 3. Return password hash
 
+**Find User by ID**
+
+1. Query for user in both the User and LabTech tables
+    * Not Found: return false
+    * Found: return true
+
 **Verify User**
 
 1. Query for user in both the User and LabTech tables
@@ -33,6 +39,24 @@ Ensures that a given labtech matches a given timeslot.
    the table
     * Not Valid: return false
 3. Once the password validation is successful return true
+
+**Get User**
+
+1. Query for a user in both the User and Labtech tables/models
+    * Not Found: return empty dictionary
+2. Format user data into dictionary using request_fields to create the
+   dictionary
+
+```json
+
+{
+    firstname
+    lastname
+    initials
+    uwiIssuedID
+}
+
+```
 
 ## Request Controllers
 
@@ -136,13 +160,13 @@ Makes updates to the database through the application models.
         1. Call Utils *GeneratePassword* method
         2. Query for LabTech instance
 3. Update labtech instance and commit changes
+4. Return true or false to determine success of operation
 
 **Update User Data**
 
 1. Check that the user/labtech identifier is valid
 2. Create new UserRequest instance
     * labtechID
-    * status to OPEN
     * infoType
     * newInfo
 3. Add and commit new UserRequest to database

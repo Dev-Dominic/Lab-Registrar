@@ -5,9 +5,10 @@ from abc import ABC, abstractmethod
 # Application Modules
 
 from app import db
-from app.classes.models.request import Status, SwapRequest, UserRequest
+from app.classes.models.request import Status, InfoType, SwapRequest, UserRequest
 from app.classes.models.clockin import TemporarySwap
-from app.classes.controllers.utils import timeslot_match, is_admin
+from app.classes.controllers.utils import timeslot_match, is_admin, find_user,
+generate_password
 
 # Flask Modules
 
@@ -201,7 +202,7 @@ class SwapRequestController(RequestControllerAbstract):
         success = SwapRequestController.resolve(swapID)
         return success
 
-def UserRequestController(RequestControllerAbstract):
+class UserRequestController(RequestControllerAbstract):
     """Controls the various stages within a user request
 
     There are three stages:
@@ -221,8 +222,8 @@ def UserRequestController(RequestControllerAbstract):
             user_request: UserRequest instance
 
         """
-        swap_request = UserRequest.query.filter_by(id=userRequestID).first()
-        return swap_request
+        user_request = UserRequest.query.filter_by(id=userRequestID).first()
+        return user_request
 
     @staticmethod
     def check_state(userRequestID):
@@ -244,24 +245,74 @@ def UserRequestController(RequestControllerAbstract):
         request
 
         Args:
-            requestID: associated request identifier
+            userRequestID: associated request identifier
+
+        Return:
+            resolved: boolean indicating whether operation was successful
 
         """
-        pass
+        resolved = False
+        if UserRequestController.check_state(userRequestID):
+            user_request = UserRequestController.get_request(userRequestID)
+            labtech = find_user(user_request.labtech_id)
+
+            if user_request.infoType == InfoType.PASSWORD:
+                labtech.password = generate_password(labtech.user_initials())
+            else:
+                # dict donder method to dynamically change instance attributes
+
+                infoType = user_request.infoType.lower()
+                labtech.__dir__(infoType) = user_request.newInfo
+
+            db.session.commit() # update labtech instance in database
+            resolved = True
+        return resolved
 
     @staticmethod
-    def update(labtechID):
+    def update(labtechID, infoType, newInfo):
         """Creates a new user/labtech request to update specific info
 
         Args:
             labtechID: labtech identifier
+            infoType: infotype enum representing a user attribute
 
         Return:
             success: boolean indicating operation success
 
         """
-        succces = False
+        success = False
+        labtech = find_user(labtechID)
+
+        if labtech:
+            user_request = UserRequest(labtechID, infoType, newInfo)
+            db.session.add(user_request)
+
+            db.session.commit()
+            success = True
+
+        return success
 
     @staticmethod
-    def approve(adminID):
-        pass
+    def approve(adminID, userRequestID, status):
+        """Allows an admin to approve or deny a given user request
+
+        Args:
+            adminID: user identifier that should represent an admin
+            userRequestID: active user request identifier
+
+        Return:
+            success: boolean indicating operation success
+
+        """
+        success = False
+
+        # Checks that adminID passed is valid and that
+        # user_request actually exsits
+
+        if is_admin(adminID):
+            user_request = UserRequestController.get_request(userRequestID)
+            if user_request:
+                user_request.status = status
+                success = UserRequestController.resolve(userRequestID)
+
+        return success

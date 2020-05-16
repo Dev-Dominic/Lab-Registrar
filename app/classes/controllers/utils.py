@@ -69,6 +69,24 @@ def generate_password(userInitials):
     password = generate_password_hash(f'{userInitials}{random_num}')
     return password
 
+def find_user(ID):
+    """Verification of user using id and password
+
+    Args:
+        ID: user/labtech identifier
+
+    Return:
+        query_user:  user instance
+
+    """
+    # Retrieving user data by checking both the User and LabTech models/tables.
+
+    query_user = User.query.filter_by(uwiIssuedID=ID).first()
+    if not query_user:
+        query_user = LabTech.query.filter_by(uwiIssuedID=ID).first()
+
+    return query_user
+
 def verify_user(ID, password):
     """Verification of user using id and password
 
@@ -81,41 +99,38 @@ def verify_user(ID, password):
 
     """
     verified = False
+    response = find_user(ID) # tuple(boolean, User Object)
 
-    # Retrieving user data by checking both the User and LabTech models/tables.
+    if response[0]:
+        verified = check_password_hash(response[1].password, password)
 
-    query_user = User.query.filter_by(uwiIssuedID=ID).first()
-    if not query_user:
-        query_user = LabTech.query.filter_by(uwiIssuedID=ID).first()
-        if not query_user:
-            verified = False
-            return verified
-
-    verified = check_password_hash(query_user.password, password)
     return verified
 
-def verify_user_id(ID):
-    """Verification of user using id and password
+def get_user(ID, request_list):
+    """Creates filtered user data dictionary
 
     Args:
         ID: user/labtech identifier
-        password
+        request_list: filter list
 
     Return:
-        verified: boolean indicating whether verification was successful
+        user_data: filtered user object, that is stored in a dictionary
+
+        {
+            key : 'value',
+            'firstname' : 'Bruce',
+            'initials' : 'BH'
+        }
 
     """
-    verified = False
+    user_data = {}
+    response = find_user(ID)
 
-    # Retrieving user data by checking both the User and LabTech models/tables.
+    # Filtering of query response using request_list
+    # Object dict donder method used to dynamically access
+    # class attributes
 
-    query_user = User.query.filter_by(uwiIssuedID=ID).first()
-    if not query_user:
-        query_user = LabTech.query.filter_by(uwiIssuedID=ID).first()
-        if not query_user:
-            verified = False
-            return verified
-
-    verified = check_password_hash(query_user.password, password)
-    return verified
-
+    if reponse:
+        for filter_el in request_list:
+            user_data[filter_el] = response.__dict__(filter_el)
+    return user_data
