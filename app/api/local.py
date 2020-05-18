@@ -22,9 +22,10 @@ def clock_in():
     """
     response, status = jsonify({}), 400
 
+    # Ensures that only json content_type is accepted 
+
     if request.content_type.startswith('application/json'):
-        ID = request.args.get('uwiIssuedID')
-        password = request.args.get('password')
-        response = jsonify(AccessController.clock_in(ID, password))
+        ID, password = request.get_json().values()
+        response = jsonify(clockin = AccessController.clock_in(ID, password))
         status = 200
     return response, status 
