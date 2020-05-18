@@ -1,8 +1,8 @@
 # Application Modules
 
 from app import db
-from app.classes.models.user import LabTech
-from app.classes.models.clockin import ClockInEntry, TemporarySwap
+#from app.classes.models.user import LabTech
+# from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
 # Flask Modules
 

@@ -2,9 +2,10 @@
 
 import enum
 
-# Applicaiton Modules
+# Application Modules
 
 from app import db
+# from app.classes.models.user import LabTech 
 
 # Enums
 

@@ -54,10 +54,10 @@ def timeslot_match(labtechID, timeslotID):
     timeslot = TimeSlot.query.filter_by(id=timeslotID).first()
     labtech_timeslot = [labtech.uwiIssuedID for labtech in timeslot.labtechs.all()]
     temporary_swap = TemporarySwap.query.filter_by(labtechID=labtechID,
-                                                   timeslotID=timeslotID).first()
+                                                   timeslotID=timeslotID).all()
+    temp_swap_ids = [temp.labtechID for temp in temporary_swap]
 
-    match = (labtechID in labtech_timeslot) or (labtechID ==
-                                                temporary_swap.labtechID)
+    match = (labtechID in labtech_timeslot) or (labtechID == temp_swap_ids)
     return match
 
 def generate_password(userInitials):

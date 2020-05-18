@@ -1,9 +1,11 @@
 # Python Modules
 
-from app.api.web import web
-from app.api.local import local
 import sys
 import os
+
+# Application Modules
+
+# from app.api.web import web
 
 # Flask Modules
 
@@ -21,14 +23,12 @@ sys.path.append(os.getenv('APP'))  # adding project app root
 
 # Blueprint Imports
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 # Blueprints registering
 
-app.register_blueprint(local, url_prefix='/local')
-app.register_blueprint(web, url_prefix='/web')
+# app.register_blueprint(web, url_prefix='/web')
 
 # Database configuration
 
@@ -48,3 +48,10 @@ from app.classes.models.user import User, LabTech
 from app.classes.models.timeslot import Event, TimeSlot 
 from app.classes.models.request import SwapRequest, UserRequest
 from app.classes.models.clockin import ClockInEntry, TemporarySwap
+
+
+from app.api.local import local
+from app.api.default import default
+
+app.register_blueprint(default, url_prefix='/default')
+app.register_blueprint(local, url_prefix='/local')

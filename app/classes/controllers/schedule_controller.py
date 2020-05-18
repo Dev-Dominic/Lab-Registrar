@@ -73,8 +73,7 @@ class ScheduleController:
                 'day' : timeslot.day,
                 'time' : timeslot.time,
                 'event' : timeslot.event.event_name,
-                'labtechs' : [labtech.user_initials() for labtech in
-                              timeslots.labtechs.all() ]
+                'labtechs' : [ labtech.user_initials for labtech in timeslot.labtechs.all() ]
             }
             for timeslot in timeslots
         } 

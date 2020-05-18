@@ -1,7 +1,7 @@
 # Application Modules
 
 from app import db
-from app.classes.models.request import SwapRequest, UserRequest
+# from app.classes.models.request import SwapRequest, UserRequest
 from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
 # Flask Modules
