@@ -90,6 +90,20 @@ class UserMixin(object):  # TODO Make an abstract class
 
         return user_data
 
+    # LoginManager necessary methods
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.uwiIssuedID
+
 
 class User(UserMixin, db.Model):
     """User model that represents a generic user in the lab system
@@ -111,14 +125,14 @@ class LabTech(UserMixin, db.Model):
     """Models lab techs in the system
 
     Attributes:
-        hoursWorked: keeps track of the hours worked for a given lab tech based
+        hours_worked: keeps track of the hours worked for a given lab tech based
         on each time they clock-in and the hours that persist after each
         clock-in
 
     """
     __tablename__ = 'labtechs'
 
-    hoursWorked = db.Column(db.Integer, nullable=False)
+    hours_worked = db.Column(db.Integer, nullable=False)
 
     # Model Relationships
     user_request = db.relationship(
@@ -128,6 +142,14 @@ class LabTech(UserMixin, db.Model):
     temp_swap = db.relationship('TemporarySwap', backref='labtech',
                                 lazy='select')
 
-    def __init__(self, ID, firstname, lastname, password, hoursWorked):
+    def __init__(self, ID, firstname, lastname, password, hours_worked):
         UserMixin.__init__(self, ID, firstname, lastname, password)
-        self.hoursWorked = hoursWorked
+        self.hours_worked = hours_worked
+
+    def get_hours_worked(self):
+        """ hours_worked getter """
+        return self.hours_worked
+
+    def inc_hours_worked(self):
+        """ Increments hours_worked by 1 """
+        self.hours_worked += 1

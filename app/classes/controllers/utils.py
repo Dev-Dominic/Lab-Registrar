@@ -6,6 +6,7 @@ from random import randint
 
 from app.classes.models.user import User, LabTech
 from app.classes.models.timeslot import TimeSlot
+from app.classes.models.clockin import TemporarySwap, ClockInEntry
 
 # Flask Modules
 
@@ -39,6 +40,9 @@ def is_admin(ID):
 def timeslot_match(labtechID, timeslotID):
     """Validates that both labtech and timeslot have a relationship
 
+    Validates by searching both the labtech_timeslot relationship and
+    temporary_swap table.
+
     Args:
         labtechID: labtech identifier
         timeslotID: timeslot identifier
@@ -48,7 +52,12 @@ def timeslot_match(labtechID, timeslotID):
 
     """
     timeslot = TimeSlot.query.filter_by(id=timeslotID).first()
-    match = labtechID in [labtech.uwiIssuedID for labtech in timeslot.labtechs.all()]
+    labtech_timeslot = [labtech.uwiIssuedID for labtech in timeslot.labtechs.all()]
+    temporary_swap = TemporarySwap.query.filter_by(labtechID=labtechID,
+                                                   timeslotID=timeslotID).first()
+
+    match = (labtechID in labtech_timeslot) or (labtechID ==
+                                                temporary_swap.labtechID)
     return match
 
 def generate_password(userInitials):
@@ -101,8 +110,8 @@ def verify_user(ID, password):
     verified = False
     response = find_user(ID) # tuple(boolean, User Object)
 
-    if response[0]:
-        verified = check_password_hash(response[1].password, password)
+    if response:
+        verified = check_password_hash(response.password, password)
 
     return verified
 

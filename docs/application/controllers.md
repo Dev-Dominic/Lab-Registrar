@@ -196,11 +196,13 @@ Makes updates to the database through the application models.
 #### Clock-in
 
 1. Verify user using utils module
-2. Verify that the current time matches with a given users timeslots by probing
+2. Determine if a valid time to login based on timeslots stored in database
+3. Verify that the current time matches with a given users timeslots by probing
    the timeslot table and the temporary swap table
-3. Update a given users hoursworked to reflect successful clock-in based on
+4. Update a given users hours_worked to reflect successful clock-in based on
    verification
-4. Return status message and code to indicate success of clock-in
+5. Add new entry into clock_in_entry to log successful clock_in
+6. Return status message and code to indicate success of clock-in
 
 ## Other
 
