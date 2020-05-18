@@ -4,7 +4,7 @@
 
 ### Environment Variables
 
-**Note:** These should be set in .env file, these are **not optional**
+**Note:** These should be set in .env file in project directory, these are **not optional**
 
 - BASEDIR: Absolute Path to Lab-Registrar project folder
 - DEBUG: sets flask debug mode
@@ -40,12 +40,15 @@ _ DB_USER: user password
 ```
 
 **Generate Database**
-*Ensure virtual environment is activated*
+
+Generates a test database and populates the database with the necessary tables
+with data.
+
 ```bash
 
-   (venv) $ python generate_testdb.py
-   (venv) $ flask db migrate
+   (venv) $ python scripts/generate_testdb.py
    (venv) $ flask db upgrade
+   (venv) $ python scripts/populate.py
 
 ```
 
