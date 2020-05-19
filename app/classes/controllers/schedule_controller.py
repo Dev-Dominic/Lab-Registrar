@@ -1,23 +1,17 @@
-# Python Modules
-
 # Application Modules
 
 from app.classes.models.user import LabTech
 from app.classes.models.timeslot import TimeSlot
 from app.classes.controllers.utils import is_admin
 
-# Flask Modules
-
-# TODO possible precautionary code to check that the person that is currently
-# logged in isn't accessing other people's generated schedule
-
 class ScheduleController:
 
     @staticmethod
-    def generate_schedule(labtechID):
+    def generate_schedule(user_request_id, labtech_id):
         """Generates labtech specific schedule
 
         Args:
+            user_request_id: user that is requesting to generate schedule
             labtechID: labtech identifier
 
         Return:
@@ -32,19 +26,24 @@ class ScheduleController:
             }
 
         """
-        labtech = LabTech.query.filter_by(uwiIssuedID=labtechID).first()
-        timeslots = labtech.timeslots.all() 
+        result = {}
 
-        result = {
-            timeslot.id : {
-                'day' : timeslot.day,
-                'time' : timeslot.time,
-                'event' : timeslot.event.event_name
-            }
-            for timeslot in timeslots
-        } 
+        # Ensures that user that is requesting a specific schedule is the given
+        # user or is an admin
+
+        if user_request_id == labtech_id or is_admin(user_request_id):
+            labtech = LabTech.query.filter_by(uwiIssuedID=labtechID).first()
+            timeslots = labtech.timeslots.all() 
+
+            result = {
+                timeslot.id : {
+                    'day' : timeslot.day,
+                    'time' : timeslot.time,
+                    'event' : timeslot.event.event_name
+                }
+                for timeslot in timeslots
+            } 
         return result
-
 
     @staticmethod
     def generate_master_schedule():

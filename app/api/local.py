@@ -22,10 +22,17 @@ def clock_in():
     """
     response, status = jsonify({}), 400
 
-    # Ensures that only json content_type is accepted 
+    # Offloads json response into ID and password, should throw an exception in
+    # the event that two many parameters where sent in the json object body
 
-    if request.content_type.startswith('application/json'):
+    try:
         ID, password = request.get_json().values()
-        response = jsonify(clockin = AccessController.clock_in(ID, password))
-        status = 200
+
+        if ID and password: 
+            response = jsonify(clockin = AccessController.clock_in(ID, password))
+            status = 200
+    except:
+        response = jsonify(err='Server Error: Credentials Issue')
+        status = 500
+    
     return response, status 
