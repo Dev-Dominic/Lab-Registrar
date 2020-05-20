@@ -5,38 +5,47 @@ from datetime import datetime
 # Application Modules
 
 from app import db
-from app.classes.models.user import User, LabTech
+from app.classes.models.user import LabTech
 from app.classes.models.timeslot import TimeSlot
 from app.classes.models.clockin import ClockInEntry
 from app.classes.controllers.utils import verify_user, find_user, timeslot_match
-
-# Flask Modules
-
-from flask_login import login_user
-from app import login_manager
-from werkzeug.security import check_password_hash
 
 class AccessController():
     """ Handles user access to the system """
 
     @staticmethod
-    def login(ID, password):
-        """Handles normal user login and session handling
-
+    def authenticate(ID, password):
+        """User authentication 
+        
         Args:
-            ID: user identifier
-            password: related user instance password
+            ID: user/labtech identifier
+            password: associated user/labtech password
 
         Return:
-            success: boolean indicating success of the operation
+            user: user model instance
 
         """
-        success = False
-        if verify_user(ID, password):
-            labtech = find_user(ID)
-            login_user(labtech)
-            success = True
-        return success
+        user = find_user(ID)
+        if user and verify_user(ID, password):
+            # Additional property added to user instance object for the purpose
+            # of JWT payload that requires an `id` property 
+
+            user.id = user.uwiIssuedID
+            return user
+
+    @staticmethod
+    def identity(payload):
+        """Uses payload information to retrieve current user
+
+        Args:
+            payload: contains persisted user id (uwiIssuedID) 
+
+        Return: 
+            user: user model instance
+
+        """
+        uwiIssuedID = payload['identity']
+        return find_user(uwiIssuedID)
 
     @staticmethod
     def clock_in(ID, password):
@@ -72,8 +81,3 @@ class AccessController():
                 success = True
 
         return success
-
-    @login_manager.user_loader
-    @staticmethod
-    def load_user(user_id):
-        return find_user(user_id)
