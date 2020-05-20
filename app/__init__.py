@@ -52,10 +52,10 @@ from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
 # Blueprints registering
 
-# from app.api.web import web
+from app.api.web import web
 from app.api.local import local
 from app.api.default import default
 
 app.register_blueprint(default, url_prefix='/default')
 app.register_blueprint(local, url_prefix='/local')
-# app.register_blueprint(web, url_prefix='/web')
+app.register_blueprint(web, url_prefix='/web')

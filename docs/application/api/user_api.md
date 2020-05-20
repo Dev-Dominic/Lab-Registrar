@@ -33,7 +33,7 @@ Documents all the user related API requests
 
 **headers**
 
-- `access_token`
+- `Authorization`
 
 **Arguments**
 
@@ -78,17 +78,21 @@ Documents all the user related API requests
 }
 ```
 
-## Retrieve User (filter results)
+## Get User (filter results)
 
 **Definitions**
 
 `GET /web/user (should send filter_list in json request)`
 
+**headers**
+
+- `Authorization`
+
 **Arguments**
 
 - `uwiIssuedID`: 6000000
 - `request_list`: ['firstname', 'lastname', 'user_initials', 'uwiIssuedID',
-'hours_worked']
+'hours_worked', 'fullname']
 
 **Response**
 
@@ -99,6 +103,7 @@ Documents all the user related API requests
     'uwiIssuedID': 6000000,
     'firstname': 'John',
     'lastname': 'Doe',
+    'fullname': 'John Doe',
     'user_initials': 'JD', 
     'hours_worked': 2,
 }
@@ -130,6 +135,29 @@ response object.
         'lastname': 'Cohen',
         'user_initials': 'DC',
         'Admin': 'true'
+    }
+}
+```
+
+## Get currently working labtechs
+
+**Definitions**
+
+`GET /default/labtech/working`
+
+**Response**
+
+- `200 OK` on success
+
+```json
+{
+    '6000000': {
+        'fullname': 'John Doe',
+        'user_initials': 'JD'
+    },
+    650000: {
+        'fullname': 'Dineah Cohen',
+        'user_initials': 'DC',
     }
 }
 ```

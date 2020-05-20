@@ -8,6 +8,7 @@
     - POST /web/newuser (only allows admin to create new user)
     - GET /web/user (should send filter_list in json request)
     - GET /web/users (all users)
+    - GET /default/labtech/working (gets currently working labtechs)
 <br>
 2. Schedules
     - GET /default/schedule/master

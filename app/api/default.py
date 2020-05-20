@@ -9,7 +9,7 @@ from flask import Blueprint, jsonify
 default = Blueprint('default', __name__) 
 
 @default.route('/schedule/master', methods=['GET'])
-def master_schedule(): 
+def default_master_schedule(): 
     """Returns json response object containing all timeslots
 
     Args:

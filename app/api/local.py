@@ -9,7 +9,7 @@ from flask import Blueprint, jsonify, request
 local = Blueprint('local', __name__) 
 
 @local.route('/clockin', methods=['POST'])
-def clock_in(): 
+def local_clock_in(): 
     """Returns json response object containing all timeslots
 
     Args:
@@ -33,6 +33,5 @@ def clock_in():
             status = 200
     except:
         response = jsonify(err='Server Error: Credentials Issue')
-        status = 500
     
     return response, status 
