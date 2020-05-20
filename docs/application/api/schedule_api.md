@@ -33,6 +33,10 @@ Documents all the schedule related API requests
 
 `GET /web/schedule`
 
+**Header**
+
+- `Authorization`
+
 **Response**
 
 - `200 OK` on success

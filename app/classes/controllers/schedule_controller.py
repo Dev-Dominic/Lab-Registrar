@@ -32,7 +32,7 @@ class ScheduleController:
         # user or is an admin
 
         if user_request_id == labtech_id or is_admin(user_request_id):
-            labtech = LabTech.query.filter_by(uwiIssuedID=labtechID).first()
+            labtech = LabTech.query.filter_by(uwiIssuedID=labtech_id).first()
             timeslots = labtech.timeslots.all() 
 
             result = {

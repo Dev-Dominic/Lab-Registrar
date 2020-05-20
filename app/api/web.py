@@ -1,6 +1,7 @@
 # Application Modules
 
 from app.classes.controllers.utils import get_user, get_users
+from app.classes.controllers.schedule_controller import ScheduleController
 
 # Flask Modules
 
@@ -59,3 +60,28 @@ def web_get_users():
         response, status = jsonify(users), 200
 
     return response, status
+
+@web.route('/schedule')
+@jwt_required()
+def web_labtech_schedule():
+    """Retrieves all users
+
+    Args:
+        request_json: contains necessary 
+
+    Return:
+        response: json object containing all related timeslots 
+        status: indicating request success
+
+    """
+    response, status = jsonify({}), 400
+
+    request_keys = [key for key in request.get_json().keys()]
+    if request_keys == ['uwiIssuedID']:
+        labtech_id = request.get_json()['uwiIssuedID']
+        schedule = ScheduleController.generate_schedule(current_identity.uwiIssuedID, labtech_id)    
+
+        if schedule:
+            response, status = jsonify(schedule), 200
+    return response, status 
+
