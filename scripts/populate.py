@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 sys.path.append(os.getenv('BASEDIR'))  # adding project app root
-
+print(os.getenv('BASEDIR'))
 # Application Modules
 
 from app import db

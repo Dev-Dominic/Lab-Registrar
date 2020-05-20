@@ -13,6 +13,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_cors import CORS
 
 # Loading environment variables
 
@@ -31,12 +32,12 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # app.register_blueprint(web, url_prefix='/web')
 
 # Database configuration
-
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
+print(os.getenv('DATABASE_URI'))
 # Login Manager
 
 login_manager = LoginManager()

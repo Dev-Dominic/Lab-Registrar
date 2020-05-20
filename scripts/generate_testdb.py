@@ -29,10 +29,10 @@ def setup():
         'DB_USER': os.getenv('DB_USER'),
         'DB_PASSWORD': os.getenv('DB_PASSWORD'),
     }
-
+    print(db)
     conn = psycopg2.connect(
         user="postgres",
-        password="password"
+        password="power123"
     ) # Connecting to database
 
     with conn:
