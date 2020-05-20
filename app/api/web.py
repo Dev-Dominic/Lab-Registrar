@@ -1,6 +1,6 @@
 # Application Modules
 
-from app.classes.controllers.utils import get_user
+from app.classes.controllers.utils import get_user, get_users
 
 # Flask Modules
 
@@ -15,7 +15,7 @@ def web_get_user():
     """Retrieves a filtered user data 
 
     Args:
-        json: contains necessary data to retrieve user
+        request_json: contains necessary data to retrieve user
 
     Return:
         response: object containing retrieve user data
@@ -33,5 +33,29 @@ def web_get_user():
 
         except:
             response = jsonify(server_error='Credentials Error')
+
+    return response, status
+
+@web.route('/users')
+@jwt_required()
+def web_get_users():
+    """Retrieves all users
+
+    Args:
+        request_json: contains necessary 
+
+    Return:
+        response: json object containing all users
+        status: indicating request success
+
+    """
+    response, status = jsonify({}), 403
+
+    # Checks that users were retrieve, because get_users checks that admins are
+    # making the request and will generate empty dictionary otherwise
+
+    users = get_users(current_identity.uwiIssuedID) 
+    if users:
+        response, status = jsonify(users), 200
 
     return response, status
