@@ -6,7 +6,7 @@
     - POST /web/auth/login
     - POST /local/clockin
     - POST /web/newuser (only allows admin to create new user)
-    - GET /web/user (should send filter_list in json request)
+    - GET /web/user 
     - GET /web/users (all users)
     - GET /default/labtech/working (gets currently working labtechs)
 <br>
@@ -27,7 +27,7 @@
     - PATCH /web/request/swap/approve
 <br>
 4. UserRequest
-    - PATCH /web/request/user/
+    - POST /web/request/user/
     - PATCH /web/request/user/approve
 
 **Note**: Possible Security issues with using `GET` method to get data from API.
