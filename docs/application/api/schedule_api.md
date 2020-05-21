@@ -56,3 +56,27 @@ Documents all the schedule related API requests
     },
 }
 ```
+
+## LabTech Registration
+
+`PATCH /web/schedule/register `
+
+**Header**
+
+- `Authorization`
+
+**Arguments**
+
+- `timeslot_id` 
+
+**Response**
+
+- `200 OK` on success
+- `400 Bad Request` bad request body
+
+```json
+{
+    success: true / false,
+    message: message indicating what caused success to be true or false
+}
+```
