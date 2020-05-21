@@ -8,6 +8,29 @@ from app.classes.controllers.utils import is_admin, find_user
 class ScheduleController:
 
     @staticmethod
+    def __generate_schedule(timeslots):
+        """Generates dictionary containing timeslots information
+
+        Args:
+            timeslots: list of timeslot instances
+
+        Return:
+            result: dictionary containing a that contain individual timeslot
+            data in another dictionary
+
+        """
+        result = {
+            timeslot.id : {
+                'day' : timeslot.day,
+                'time' : timeslot.time,
+                'event' : timeslot.event.event_name,
+                'labtechs' : [ labtech.user_initials for labtech in timeslot.labtechs.all() ]
+            }
+            for timeslot in timeslots
+        }
+        return result
+
+    @staticmethod
     def generate_schedule(user_request_id, labtech_id):
         """Generates labtech specific schedule
 
@@ -34,16 +57,8 @@ class ScheduleController:
 
         if user_request_id == labtech_id or is_admin(user_request_id):
             labtech = LabTech.query.filter_by(uwiIssuedID=labtech_id).first()
-            timeslots = labtech.timeslots.all() 
-
-            result = {
-                timeslot.id : {
-                    'day' : timeslot.day,
-                    'time' : timeslot.time,
-                    'event' : timeslot.event.event_name
-                }
-                for timeslot in timeslots
-            } 
+            timeslots = labtech.timeslots.all()
+            result = ScheduleController.__generate_schedule(timeslots)
         return result
 
     @staticmethod
@@ -66,17 +81,8 @@ class ScheduleController:
             }
 
         """
-        timeslots = TimeSlot.query.all()        
-
-        result = {
-            timeslot.id : {
-                'day' : timeslot.day,
-                'time' : timeslot.time,
-                'event' : timeslot.event.event_name,
-                'labtechs' : [ labtech.user_initials for labtech in timeslot.labtechs.all() ]
-            }
-            for timeslot in timeslots
-        } 
+        timeslots = TimeSlot.query.all()
+        result = ScheduleController.__generate_schedule(timeslots)
         return result
 
     @staticmethod
@@ -88,10 +94,10 @@ class ScheduleController:
             timeslot_id: timeslot identifier
 
         Return:
-            result: 
+            result:
                 success: boolean indicating operation success
                 message: message indicating why operation success state was
-                given 
+                given
 
         """
         result = {'success': False, 'message': ''}
@@ -104,7 +110,7 @@ class ScheduleController:
                           timeslot.labtechs.all()]
 
         # Checks if the labtech is already associated with timeslot
-        # Appends labtech instance to timeslot labtech 
+        # Appends labtech instance to timeslot labtech
 
         if not labtech_id in assoc_labtechs_id:
             timeslot.labtechs.append(find_user(labtech_id))

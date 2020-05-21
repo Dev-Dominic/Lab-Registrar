@@ -25,15 +25,12 @@ def web_get_user():
     """
     response, status = jsonify({}), 400
 
-    request_keys = [key for key in request.get_json().keys()] 
-    if  request_keys == ['uwiIssuedID', 'request_list']:
-        try:
-            user_id, request_list = request.get_json().values()
-            response = get_user(current_identity.uwiIssuedID, user_id, request_list)
-            status = 200
-
-        except:
-            response = jsonify(server_error='Credentials Error')
+    user_id = request.args.get('uwiIssuedID')
+    if user_id:
+        response = get_user(current_identity.uwiIssuedID, user_id)
+        status = 200
+    else:
+        response = jsonify(server_error='Credentials Error')
 
     return response, status
 
@@ -76,9 +73,8 @@ def web_labtech_schedule():
     """
     response, status = jsonify({}), 400
 
-    request_keys = [key for key in request.get_json().keys()]
-    if request_keys == ['uwiIssuedID']:
-        labtech_id = request.get_json()['uwiIssuedID']
+    labtech_id = request.args.get('uwiIssuedID') 
+    if labtech_id:
         schedule = ScheduleController.generate_schedule(current_identity.uwiIssuedID, labtech_id)    
 
         if schedule:
@@ -96,17 +92,17 @@ def web_schedule_register():
     Return:
         response: message indicating whether the operation was a success
         status: success status code
+
     """
     response, status = jsonify(err='Request Invalid'), 400
     
-    request_keys = [key for key in request.get_json().keys()]
-    if request_keys == ['timeslot_id']:
+    timeslot_id = request.get_json()['timeslot_id']
+    if timeslot_id:
         # Extracting labtech_id and timeslot_id and then attempt to establish a
         # relationship with both instances
 
         current_id = current_identity.uwiIssuedID
-        timeslot_id = request.get_json()['timeslot_id']
         result = ScheduleController.schedule_register(current_id, timeslot_id)
-
         response, status  = jsonify(result), 200
+
     return response, status

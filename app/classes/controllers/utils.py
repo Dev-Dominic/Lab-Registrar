@@ -108,14 +108,14 @@ def verify_user(ID, password):
 
     """
     verified = False
-    response = find_user(ID) # tuple(boolean, User Object)
+    response = find_user(ID) 
 
     if response:
         verified = check_password_hash(response.password, password)
 
     return verified
 
-def get_user(user_request_id, labtech_id, request_list):
+def get_user(user_request_id, labtech_id):
     """Creates filtered user data dictionary
 
     Args:
@@ -127,6 +127,8 @@ def get_user(user_request_id, labtech_id, request_list):
 
     """
     user_data = {}
+    request_list = ['firstname', 'lastname', 'user_initials', 'fullname',
+                    'uwiIssuedID', 'hours_worked']
 
     # Checks that the requesting user is requesting their own data or an admin
     # is requesting the the data

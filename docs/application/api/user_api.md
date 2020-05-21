@@ -88,11 +88,9 @@ Documents all the user related API requests
 
 - `Authorization`
 
-**Arguments**
+**Parameters**
 
 - `uwiIssuedID`: 6000000
-- `request_list`: ['firstname', 'lastname', 'user_initials', 'uwiIssuedID',
-'hours_worked', 'fullname']
 
 **Response**
 

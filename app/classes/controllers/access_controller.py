@@ -66,7 +66,7 @@ class AccessController():
             # Retrieves current weekday and hour using datetime object
 
             date_obj = datetime.today()
-            ct = (date_obj.weekday() + 1, date_obj.hour) # current date and time
+            ct = [date_obj.weekday() + 1, date_obj.hour] # current date and time
             timeslot = TimeSlot.query.filter_by(day=ct[0], time=ct[1]).first()
 
             # Checks that timeslot exists along with whether a given labtech is
