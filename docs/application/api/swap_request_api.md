@@ -6,11 +6,17 @@ Details API endpoints for SwapRequests
 
 **Definitions**
 
-`GET /web/request/all`
+`GET /web/request/swap`
+
+**Parameters**
+
+- `request_id`: 23
 
 **Response**
 
 - `200 OK` on success
+- `400 Bad Request` occurs with invalid parameters
+- `404 Not Found` occurs if a given request is not found
 
 **OPEN Request**
 
@@ -20,8 +26,8 @@ Details API endpoints for SwapRequests
         "status": "OPEN",
         "labtech_request_id": "62011781",
         "labtech_confirm_id": "",
-        "admin_approve": "",
-        "request_labtech_timeslot_id": 5,
+        "admin_approve_id": "",
+        "request_timeslot_id": 5,
         "confirm_timeslot_id": ""
     }
 }
@@ -35,8 +41,8 @@ Details API endpoints for SwapRequests
         "status": "CONFIRM",
         "labtech_request_id": "62011781",
         "labtech_confirm_id": "60000007",
-        "admin_approve": "",
-        "request_labtech_timeslot_id": 5,
+        "admin_approve_id": "",
+        "request_timeslot_id": 5,
         "confirm_timeslot_id": 20
     }
 }
@@ -50,8 +56,8 @@ Details API endpoints for SwapRequests
         "status": "APPROVED",
         "labtech_request_id": "62011781",
         "labtech_confirm_id": "60000007",
-        "admin_approve": "6000000",
-        "request_labtech_timeslot_id": 5,
+        "admin_approve_id": "6000000",
+        "request_timeslot_id": 5,
         "confirm_timeslot_id": 20
     }
 }
@@ -65,7 +71,7 @@ Details API endpoints for SwapRequests
 
 **Arguments**
 
-- "request_labtech_timeslot_id" : 5
+- "request_timeslot_id" : 5
 
 **Response**
 
@@ -96,6 +102,7 @@ Details API endpoints for SwapRequests
 **Response**
 
 - `200 OK` on success
+- `500 Internal Server Error` on server error
 
 ```json
 {
@@ -103,16 +110,16 @@ Details API endpoints for SwapRequests
         "status": "OPEN",
         "labtech_request_id": "62011781",
         "labtech_confirm_id": "",
-        "admin_approve": "",
-        "request_labtech_timeslot_id": 5,
+        "admin_approve_id": "",
+        "request_timeslot_id": 5,
         "confirm_timeslot_id": ""
     },
     "5": {
         "status": "CONFIRM",
         "labtech_request_id": "62011781",
         "labtech_confirm_id": "61981091",
-        "admin_approve": "",
-        "request_labtech_timeslot_id": 5,
+        "admin_approve_id": "",
+        "request_timeslot_id": 5,
         "confirm_timeslot_id": 18
     }
 }
@@ -148,7 +155,6 @@ Details API endpoints for SwapRequests
     "message": "Counter offer was not made"
 }
 ```
-
 
 ## Admin Approval of request
 
