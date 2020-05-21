@@ -61,7 +61,7 @@ def web_get_users():
 
     return response, status
 
-@web.route('/schedule')
+@web.route('/schedule',methods=["POST"])
 @jwt_required()
 def web_labtech_schedule():
     """Retrieves all users
