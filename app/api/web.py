@@ -9,7 +9,7 @@ from flask_jwt import jwt_required, current_identity
 
 web = Blueprint('web', __name__)
 
-@web.route('/user')
+@web.route('/user', methods=["POST"])
 @jwt_required()
 def web_get_user():
     """Retrieves a filtered user data 
