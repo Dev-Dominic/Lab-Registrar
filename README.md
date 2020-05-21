@@ -7,6 +7,7 @@
 **Note:** These should be set in .env file in project directory, these are **not optional**
 
 - BASEDIR: Absolute Path to Lab-Registrar project folder
+- APP: path to app BASEDIR\app
 - DEBUG: sets flask debug mode
 - SECRET_KEY: randomly generated secret key
 - DB_NAME: name of postgresql test database

@@ -74,8 +74,13 @@ class UserMixin(object):  # TODO Make an abstract class
         # Checks that attr is in the object's attribute/method dictionary  
         # vars method used to dynamically access class attributes
 
-        user_data = {}
+        user_data = {'uwiIssuedID': self.uwiIssuedID}
         for attr in filter_list:
+            # Ensures that user password is not leaked 
+
+            if attr == 'password':
+                continue
+
             if attr in self.__dict__:
                 user_data[attr] = vars(self)[attr]
 
@@ -87,22 +92,7 @@ class UserMixin(object):  # TODO Make an abstract class
 
             if attr == 'fullname':
                 user_data[attr] = self.fullname 
-
         return user_data
-
-    # LoginManager necessary methods
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.uwiIssuedID
 
 
 class User(UserMixin, db.Model):

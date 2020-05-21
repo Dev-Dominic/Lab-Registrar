@@ -168,6 +168,7 @@ class SwapRequestController(RequestController):
             return success
 
         # Retrieving SwapRequest and updating request
+
         swap_request = SwapRequestController.get_request(swapID)
 
         if not swap_request.status in [Status.DENIED, Status.APPROVED]:
@@ -267,6 +268,7 @@ class UserRequestController(RequestController):
             user_request = UserRequestController.get_request(userRequestID)
 
             # Checks whether a given request has already been resolved
+
             if user_request.status in [Status.DENIED, Status.APPROVED]:
                 return False
 

@@ -93,7 +93,6 @@ def find_user(ID):
     query_user = User.query.filter_by(uwiIssuedID=ID).first()
     if not query_user:
         query_user = LabTech.query.filter_by(uwiIssuedID=ID).first()
-
     return query_user
 
 def verify_user(ID, password):
@@ -115,7 +114,7 @@ def verify_user(ID, password):
 
     return verified
 
-def get_user(ID, request_list):
+def get_user(user_request_id, labtech_id, request_list):
     """Creates filtered user data dictionary
 
     Args:
@@ -126,6 +125,11 @@ def get_user(ID, request_list):
         user_data: filtered user object, that is stored in a dictionary
 
     """
-    user_data = find_user(ID).filter_user(request_list)
-    return user_data
+    user_data = {}
 
+    # Checks that the requesting user is requesting their own data or an admin
+    # is requesting the the data
+
+    if user_request_id == labtech_id or is_admin(user_request_id):
+        user_data = find_user(labtech_id).filter_user(request_list)
+    return user_data
