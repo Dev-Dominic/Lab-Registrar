@@ -6,20 +6,20 @@
     - POST /web/auth/login
     - POST /local/clockin
     - POST /web/newuser (only allows admin to create new user)
-    - GET /web/user 
+    - GET /web/user
     - GET /web/users (all users)
     - GET /default/labtech/working (gets currently working labtechs)
 <br>
 2. Schedules
     - GET /default/schedule/master
-    - GET /web/schedule/ 
+    - GET /web/schedule/
     <br>
     **Admin endpoints used to configure timeslots and events**
-    - POST /web/schedule/register/timeslots 
+    - POST /web/schedule/register/timeslots
     - POST /web/schedule/register/events
     <br>
     **Handles labtech registration for timeslots**
-    - POST /web/schedule/register 
+    - POST /web/schedule/register
 <br>
 3. SwapRequest
     - GET /web/request/swap
@@ -41,8 +41,8 @@ Response Object
 
 ```json
 {
-    'data': 'Mixed type holding the content  of the response', 
-    'message': 'description' 
+    'data': 'Mixed type holding the content  of the response',
+    'message': 'description'
 }
 ```
 

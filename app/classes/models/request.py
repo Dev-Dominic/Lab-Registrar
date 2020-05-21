@@ -5,16 +5,16 @@ import enum
 # Application Modules
 
 from app import db
-# from app.classes.models.user import LabTech 
+# from app.classes.models.user import LabTech
 
 # Enums
 
 
 class Status(enum.Enum):
-    OPEN = enum.auto()
-    DENIED = enum.auto()
-    CONFIRM = enum.auto()
-    APPROVED = enum.auto()
+    OPEN = "OPEN"
+    DENIED = "DENIED"
+    CONFIRM = "CONFIRM"
+    APPROVED = "APPROVED"
 
 
 class InfoType(enum.Enum):

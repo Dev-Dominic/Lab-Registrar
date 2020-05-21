@@ -22,6 +22,14 @@ class RequestController(ABC):
 
     @staticmethod
     @abstractmethod
+    def generate_request_dict(requestID): pass
+
+    @staticmethod
+    @abstractmethod
+    def generate_all_requests(requestID): pass
+
+    @staticmethod
+    @abstractmethod
     def check_state(requestID):
         """Checks whether a request is in a resolved state
 
@@ -42,6 +50,7 @@ class RequestController(ABC):
 
         """
         pass
+
 
 # TODO redudancy in check_state and resolve
 # Making query to SwapRequest twice
@@ -73,6 +82,54 @@ class SwapRequestController(RequestController):
         """
         swap_request = SwapRequest.query.filter_by(id=swapID).first()
         return swap_request
+
+    @staticmethod
+    def generate_request_dict(swap_id):
+        """Generate a dictionary with swap_request attributes
+
+        Args:
+            swap_request: swap_request identifier
+
+        Return:
+            result: swap_request attributes extracted into dictionary
+
+        """
+        swap_request = SwapRequestController.get_request(swap_id)
+
+        result = {
+            'request_id': swap_request.id,
+            'status': swap_request.status.value,
+            'labtech_request_id': swap_request.labtech_request_id,
+            'labtech_confirm_id': swap_request.labtech_confirm_id,
+            'admin_approve_id': swap_request.admin_approve_id,
+            'request_timeslot_id': swap_request.request_labtech_timeslot_id,
+            'confirm_timeslot_id': swap_request.confirm_labtech_timeslot_id,
+        }
+
+        # Converting null entries to empty string in result
+
+        result = {key : value if value else '' for key, value in result.items()}
+        return result
+
+    @staticmethod
+    def generate_all_requests():
+        """Returns dictionary containing all swap requests
+
+        Args:
+            None
+
+        Return:
+            result: dictionary of all swap request
+
+        """
+        result = {}
+        swap_request_ids = [swap_request.id for swap_request in SwapRequest.query.all()]
+
+        entry_no = 1
+        for swap_request_id in swap_request_ids:
+            result[entry_no] = SwapRequestController.generate_request_dict(swap_request_id)
+            entry_no += 1
+        return result
 
     @staticmethod
     def check_state(swapID):
