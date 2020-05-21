@@ -1,6 +1,7 @@
 # Python Modules
 
 from random import randint
+from datetime import datetime
 
 # Application Modules
 
@@ -133,3 +134,70 @@ def get_user(user_request_id, labtech_id, request_list):
     if user_request_id == labtech_id or is_admin(user_request_id):
         user_data = find_user(labtech_id).filter_user(request_list)
     return user_data
+
+def get_users(user_request_id):
+    """Gets all users stored in user and labtech model databases
+
+    This should only allow for admins to retrieve all user data
+        
+    Args:
+        user_request_id: user making the request
+    
+    Return:
+        user_data: dictionary containing all users
+
+    """
+    user_data = {}
+    request_list =['firstname', 'lastname', 'user_initials', 'hours_worked', 'fullname'] 
+    if is_admin(user_request_id):
+        users = User.query.all()       
+        labtech = LabTech.query.all()
+
+        # Creates each user/labtech instance into a dictionary entry
+
+        entry = 1
+        for user in (users + labtech):
+            user_data[entry] = user.filter_user(request_list)
+            entry += 1
+
+    return user_data
+
+def clocked_in():
+    """Returns list of currently clocked in users
+
+    Args:
+        None
+
+    Return
+        clocked_in_labtechs: dictionary containing filter labtech instances tha
+        t are currently clocked_in
+
+        {
+            entry_no: {
+                fullname,
+                user_initials
+            }            
+        }
+    
+    """
+    clocked_in_labtechs = {}
+    request_list = ['fullname', 'user_initials']
+    date_check_format = '%Y-%m-%d-%H'
+
+    clock_in_entries = ClockInEntry.query.all()
+    current_date =  datetime.today().strftime(date_check_format)
+
+    # Checking current_date format against clock_in_entries
+
+    entry_no = 1
+    for entry in clock_in_entries: 
+        # Retrives entry_time and compares with current time to determine
+        # whether a given labtech is clocked_in
+
+        entry_time = entry.date_time.strftime(date_check_format)
+        if entry_time == current_date:
+            user = find_user(entry.labtech_id) 
+            clocked_in_labtechs[entry_no] = user.filter_user(request_list)
+            entry_no += 1
+
+    return clocked_in_labtechs

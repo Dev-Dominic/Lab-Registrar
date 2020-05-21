@@ -97,6 +97,7 @@ Documents all the user related API requests
 **Response**
 
 - `200 OK` on success
+- `403 Forbidden` unauthorized user accessing endpoint
 
 ```json
 {
@@ -151,11 +152,11 @@ response object.
 
 ```json
 {
-    '6000000': {
+    1: {
         'fullname': 'John Doe',
         'user_initials': 'JD'
     },
-    650000: {
+    2: {
         'fullname': 'Dineah Cohen',
         'user_initials': 'DC',
     }

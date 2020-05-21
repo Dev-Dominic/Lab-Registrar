@@ -41,9 +41,8 @@ migrate = Migrate(app, db)
 from app.classes.controllers.access_controller import AccessController 
 
 app.config['JWT_AUTH_URL_RULE'] = '/web/auth/login' 
-app.config['JWT_AUTH_USERNAME_KEY'] = os.getenv('JWT_AUTH_USERNAME_KEY')
-app.config['JWT_EXPIRATION_DELTA'] = \
-timedelta(seconds=int(os.getenv('EXPIRATION')))
+app.config['JWT_AUTH_USERNAME_KEY'] = 'uwiIssuedID' 
+app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 jwt = JWT(app, AccessController.authenticate, AccessController.identity)
 
 # Views and models imports
