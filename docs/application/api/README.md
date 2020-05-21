@@ -22,12 +22,15 @@
     - POST /web/schedule/register 
 <br>
 3. SwapRequest
-    - POST /web/request/swap/
+    - GET /web/request/swap
+    - GET /web/requests/swap
+    - POST /web/request/swap
     - PATCH /web/request/swap/accept
     - PATCH /web/request/swap/approve
 <br>
 4. UserRequest
-    - POST /web/request/user/
+    - GET /web/request/user
+    - POST /web/request/user
     - PATCH /web/request/user/approve
 
 **Note**: Possible Security issues with using `GET` method to get data from API.
@@ -50,5 +53,4 @@ Response Object
 
 - [Users](user_api.md)
 - [Schedules](schedule_api.md)
-- [SwapRequest](swap_request_api.md)
-- [UserRequest](user_request_api.md)
+- [Requests](requests_api.md)
