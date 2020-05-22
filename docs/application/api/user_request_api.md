@@ -1,16 +1,16 @@
-# Swap Requests
+# User Request
 
-Details API endpoints for SwapRequests
+Details API endpoints for UserRequest
 
-## Get a request
+## Get a user request
 
 **Definitions**
 
-`GET /web/request/swap`
+`GET /web/request/user`
 
 **Parameters**
 
-- `request_id`: 23
+- `request_id`: 12
 
 **Response**
 
@@ -25,25 +25,9 @@ Details API endpoints for SwapRequests
      "10":{
         "status": "OPEN",
         "labtech_request_id": "62011781",
-        "labtech_confirm_id": "",
+        "infoType": "firstname"
+        "newInfo": "charles"
         "admin_approve_id": "",
-        "request_timeslot_id": 5,
-        "confirm_timeslot_id": ""
-    }
-}
-```
-
-**CONFIRM Request**
-
-```json
-{
-     "10":{
-        "status": "CONFIRM",
-        "labtech_request_id": "62011781",
-        "labtech_confirm_id": "60000007",
-        "admin_approve_id": "",
-        "request_timeslot_id": 5,
-        "confirm_timeslot_id": 20
     }
 }
 ```
@@ -55,23 +39,26 @@ Details API endpoints for SwapRequests
      "10":{
         "status": "APPROVED",
         "labtech_request_id": "62011781",
-        "labtech_confirm_id": "60000007",
+        "infoType": "firstname"
+        "newInfo": "charles"
         "admin_approve_id": "6000000",
-        "request_timeslot_id": 5,
-        "confirm_timeslot_id": 20
     }
 }
 ```
-
 ## Post a request
 
 **Definitions**
 
-`POST /web/request/swap`
+`POST /web/request/user`
 
 **Arguments**
 
-- "request_labtech_timeslot_id" : 5
+`Passwords are generated for a user, no newInfo parameter needed`
+- "infoType" : 'PASSWORD'
+
+`Otherwise:`
+- "infoType" : 'uwiIssuedID'
+- "newInfo": '600017189'
 
 **Response**
 
@@ -94,11 +81,11 @@ Details API endpoints for SwapRequests
 }
 ```
 
-## Get all requests
+## Get all user requests
 
 **Definitions**
 
-`GET /web/requests/swap`
+`GET /web/requests/user`
 
 **Response**
 
@@ -110,50 +97,24 @@ Details API endpoints for SwapRequests
      "20": {
         "status": "OPEN",
         "labtech_request_id": "62011781",
-        "labtech_confirm_id": "",
+        "infoType": "uwiIssuedID",
+        "newInfo": "67890128",
         "admin_approve_id": "",
-        "request_timeslot_id": 5,
-        "confirm_timeslot_id": ""
     },
     "5": {
-        "status": "CONFIRM",
+        "status": "APPROVED",
         "labtech_request_id": "62011781",
-        "labtech_confirm_id": "61981091",
-        "admin_approve_id": "",
-        "request_timeslot_id": 5,
-        "confirm_timeslot_id": 18
+        "infoType": "uwiIssuedID",
+        "newInfo": "67890128",
+        "admin_approve_id": "6000000",
+    },
+    "43": {
+        "status": "DENIED",
+        "labtech_request_id": "60001020",
+        "infoType": "lastname",
+        "newInfo": "charles",
+        "admin_approve_id": "6000000",
     }
-}
-```
-
-## Update swap request with another labtech acceptance
-
-**Definitions**
-
-`PATCH /web/request/swap/accept`
-
-**Arguments**
-
-- "swap_request_id": 5
-- "confirm_timeslot_id": 18
-
-**Response**
-
-- `200 OK` on success
-- `500 Internal Server Error` issues arise on server
-- `400 Bad Request` improper request parameters
-
-**Success**
-```json
-{
-    "message": "Counter offer made"
-}
-```
-
-**Error**
-```json
-{
-    "message": "Counter offer was not made"
 }
 ```
 
@@ -161,11 +122,11 @@ Details API endpoints for SwapRequests
 
 **Definitions**
 
-`PATCH /web/request/swap/accept`
+`PATCH /web/request/swap/approve`
 
 **Arguments**
 
-- "swap_request_id": 5
+- "user_request_id": 5
 - "approval_status": "DENIED" or "APPROVED"
 
 **Response**

@@ -3,7 +3,7 @@
 from app.classes.models.request import Status
 from app.classes.controllers.utils import get_user, get_users
 from app.classes.controllers.schedule_controller import ScheduleController
-from app.classes.controllers.requestcontroller import SwapRequestController
+from app.classes.controllers.requestcontroller import SwapRequestController, UserRequestController
 
 # Flask Modules
 
@@ -247,4 +247,29 @@ def web_approve_swap_request():
             response, status = jsonify(message='Request Updated'), 200
         else:
             response, status = jsonify(message='Request could not be created'), 500
+    return response, status
+
+@web.route('/request/user')
+@jwt_required()
+def web_get_user_request():
+    """Retrieves a specific user request
+
+    Args:
+        request_params: contains request_id
+
+    Return:
+        response: json object containing a given user request
+
+    """
+    response, status = jsonify(err='An Error Ocurred: Bad Request'), 400
+
+    request_id = request.args.get('request_id')
+    if request_id:
+        swap_request = UserRequestController.generate_request_dict(request_id)
+
+        if not swap_request:
+            response, status = jsonify(err='User Request Not found'), 404
+        else:
+            response, status = jsonify(swap_request), 200
+
     return response, status

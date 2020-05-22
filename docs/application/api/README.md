@@ -30,6 +30,7 @@
 <br>
 4. UserRequest
     - GET /web/request/user
+    - GET /web/requests/user
     - POST /web/request/user
     - PATCH /web/request/user/approve
 

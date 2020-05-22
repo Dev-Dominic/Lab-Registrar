@@ -294,6 +294,53 @@ class UserRequestController(RequestController):
         return user_request
 
     @staticmethod
+    def generate_request_dict(swap_id):
+        """Generate a dictionary with swap_request attributes
+
+        Args:
+            swap_request: swap_request identifier
+
+        Return:
+            result: swap_request attributes extracted into dictionary
+
+        """
+        user_request = UserRequestController.get_request(swap_id)
+
+        result = {
+            'request_id': user_request.id,
+            'status': user_request.status.value,
+            'labtech_request_id': user_request.labtech_request_id,
+            'infoType': user_request.infoType,
+            'newInfo': user_request.newInfo,
+            'admin_approve_id': user_request.admin_approve_id,
+        }
+
+        # Converting null entries to empty string in result
+
+        result = {key : value if value or key == 'PASSWORD' else '' for key, value in result.items()}
+        return result
+
+    @staticmethod
+    def generate_all_requests():
+        """Returns dictionary containing all user requests
+
+        Args:
+            None
+
+        Return:
+            result: dictionary of all user request
+
+        """
+        result = {}
+        user_request_ids = [user_request.id for user_request in UserRequest.query.all()]
+
+        entry_no = 1
+        for user_request_id in user_request_ids:
+            result[entry_no] = UserRequestController.generate_request_dict(user_request_id)
+            entry_no += 1
+        return result
+
+    @staticmethod
     def check_state(userRequestID):
         """Checks whether a request is in a resolved request
 
