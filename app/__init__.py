@@ -12,6 +12,8 @@ from datetime import timedelta
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_cors import CORS
 from flask_jwt import JWT, _default_jwt_payload_handler
 
 # Loading environment variables
@@ -27,11 +29,12 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 # Database configuration
-
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+# Login Manager
 
 # JWT Configuration
 

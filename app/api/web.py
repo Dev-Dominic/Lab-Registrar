@@ -12,7 +12,7 @@ from flask_jwt import jwt_required, current_identity
 
 web = Blueprint('web', __name__)
 
-@web.route('/user')
+@web.route('/user', methods=["GET"])
 @jwt_required()
 def web_get_user():
     """Retrieves a filtered user data
@@ -60,7 +60,7 @@ def web_get_users():
 
     return response, status
 
-@web.route('/schedule')
+@web.route('/schedule',methods=["GET"])
 @jwt_required()
 def web_labtech_schedule():
     """Retrieves all users
