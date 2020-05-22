@@ -4,17 +4,14 @@ import sys
 import os
 from datetime import timedelta
 
-# Application Modules
-
-
 # Flask Modules
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
 from flask_cors import CORS
-from flask_jwt import JWT, _default_jwt_payload_handler
+# from flask_jwt import JWT, _default_jwt_payload_handler
+from flask_jwt import JWT
 
 # Loading environment variables
 
@@ -23,32 +20,30 @@ load_dotenv()
 
 sys.path.append(os.getenv('APP'))  # adding project app root
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
+CORS(app)
 
 # Database configuration
-CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-# Login Manager
 
 # JWT Configuration
 
-from app.classes.controllers.access_controller import AccessController 
+from app.classes.controllers.access_controller import AccessController
 
-app.config['JWT_AUTH_URL_RULE'] = '/web/auth/login' 
-app.config['JWT_AUTH_USERNAME_KEY'] = 'uwiIssuedID' 
+app.config['JWT_AUTH_URL_RULE'] = '/web/auth/login'
+app.config['JWT_AUTH_USERNAME_KEY'] = 'uwiIssuedID'
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 jwt = JWT(app, AccessController.authenticate, AccessController.identity)
 
 # Views and models imports
 
 from app.classes.models.user import User, LabTech
-from app.classes.models.timeslot import Event, TimeSlot 
+from app.classes.models.timeslot import Event, TimeSlot
 from app.classes.models.request import SwapRequest, UserRequest
 from app.classes.models.clockin import ClockInEntry, TemporarySwap
 
