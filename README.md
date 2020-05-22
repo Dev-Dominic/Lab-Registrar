@@ -2,6 +2,10 @@
 
 ## Setup
 
+It is required that both a node and flask server is ran at the same time. Node
+is used to render the Vuejs framework components, while the flask server is used
+to server API data.
+
 ### Environment Variables
 
 **Note:** These should be set in .env file in project directory, these are **not optional**
@@ -26,7 +30,7 @@ _ DB_USER: user password
 
     $ python -m venv <venv-directory-name>
     $ source venv/bin/activate (Linux/Unix/MacOs)
-    $ . venv\Scripts\activate (Windows)
+    $ venv\Scripts\activate (Windows)
 
 ```
 
@@ -37,6 +41,16 @@ _ DB_USER: user password
 
     (venv) $ pip install -r requirements.txt
     (venv) $ flask run
+
+```
+
+**Installing Dependencies and running VueJs**
+<br>
+*Should be done in a different terminal instance*
+```bash
+
+    npm install
+    npm run serve
 
 ```
 
@@ -52,13 +66,3 @@ with data.
    (venv) $ python scripts/populate.py
 
 ```
-
-### Project Structure
-
-**Models**
-
-**Controllers**
-
-**API**
-
-**Views**
