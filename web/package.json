@@ -16,7 +16,7 @@
     "chartist": "^0.11.4",
     "core-js": "^3.6.4",
     "es6-promise": "^4.2.8",
-    "luxon": "^1.24.1",
+    "luxon": "^1.28.1",
     "vue": "^2.6.11",
     "vue-clickaway": "^2.2.2",
     "vue-digital-clock": "^2.0.0",
